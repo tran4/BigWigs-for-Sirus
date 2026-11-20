@@ -11,9 +11,7 @@
 Тайминги, крики, ID заклинаний и мобов взяты из **DBM Sirus**, поэтому учтены переделанные Sirus рейды, героические
 режимы и кастомные боссы. Механики, которых нет в DBM, добавлены по WeakAuras игроков.
 
-> ⚠️ **Бета-версия.** Аддон проверен только в имитации клиента. В реальной игре он ещё почти не тестировался, поэтому
-> возможны ошибки: полосы могут не появляться или бой может не засчитываться. Сообщения о проблемах — в
-> [Issues](../../issues).
+Нашли ошибку или неверный таймер — пишите в [Issues](../../issues).
 
 ### Что входит
 
@@ -87,9 +85,7 @@ A port of the **BigWigs** and **LittleWigs** boss mods to the **Sirus** server (
 Timers, yells, spell and NPC IDs come from **DBM for Sirus**. This covers the raids Sirus reworked, its heroic modes
 and its custom bosses. Mechanics missing from DBM were added from players' WeakAuras.
 
-> ⚠️ **Beta.** The addon has only been tested in a simulated client and has barely been tested in the real game, so
-> expect bugs: bars may not show up, or a fight may not be detected. Please report problems in
-> [Issues](../../issues).
+Found a bug or a wrong timer? Please report it in [Issues](../../issues).
 
 ### What's included
 
