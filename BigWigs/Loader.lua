@@ -1614,7 +1614,29 @@ do
 		currentEvent = nil
 	end
 
+	-- 3.3.5: /bwdebug prints what the boss modules send to the display plugins and how many listeners got it
+	local debugEvents = {
+		BigWigs_StartBar = true, BigWigs_Message = true, BigWigs_StopBar = true, BigWigs_StopBars = true,
+		BigWigs_OnBossEngage = true, BigWigs_OnBossWin = true, BigWigs_OnBossWipe = true,
+	}
+	local function CountListeners(event)
+		local listeners = 0
+		if callbackMap[event] then for _ in next, callbackMap[event] do listeners = listeners + 1 end end
+		return listeners
+	end
+	public.CountListeners = CountListeners
+	local function DebugSend(event, ...)
+		local listeners = CountListeners(event)
+		local out = {}
+		for i = 2, math.min(select("#", ...), 5) do
+			local v = select(i, ...)
+			if type(v) ~= "table" then out[#out + 1] = tostring(v) end
+		end
+		local module = ...
+		print("|cFF33FF99BigWigs|r |cFFffff00send|r", event, type(module) == "table" and module.moduleName or "", "listeners:", listeners, table.concat(out, " | "))
+	end
 	function public:SendMessage(event, ...)
+		if public.debugChat and debugEvents[event] then DebugSend(event, ...) end
 		if callbackMap[event] then
 			local iconPosition = iconArgument[event]
 			if iconPosition then
@@ -2207,6 +2229,18 @@ SlashCmdList.BigWigsDebug = function(msg)
 		return
 	end
 	public.debugChat = true
+	if not public.debugErrors and seterrorhandler then -- 3.3.5: show the Lua errors of BigWigs and LittleWigs in the chat even with scriptErrors 0
+		public.debugErrors = true
+		local handler = geterrorhandler()
+		local shown = {}
+		seterrorhandler(function(err, ...)
+			if public.debugChat and type(err) == "string" and strfind(err, "Wigs", nil, true) and (shown[err] or 0) < GetTime() then
+				shown[err] = GetTime() + 10
+				sysprint("|cFFff3333error|r " .. err)
+			end
+			return handler(err, ...)
+		end)
+	end
 	local p = function(...) sysprint("|cFFffff00debug|r " .. strjoin(" ", tostringall(...))) end
 	SetMapToCurrentZone()
 	local area = GetCurrentMapAreaID()
@@ -2219,6 +2253,8 @@ SlashCmdList.BigWigsDebug = function(msg)
 	end
 	local core = BigWigs and BigWigs.IsEnabled and BigWigs:IsEnabled()
 	p("core enabled:", core and "yes" or "no")
+	-- 3.3.5: the enabled display plugins listen to these, 0 = the bars/messages plugin is off
+	p("listeners: bars", public.CountListeners("BigWigs_StartBar"), "messages", public.CountListeners("BigWigs_Message"), "sounds", public.CountListeners("BigWigs_Sound"))
 	if Compat.GetPlayerRole then -- 3.3.5: the role the boss modules use (TANK/HEALER/DAMAGER), set by BigWigs_Core
 		local form
 		for i = 1, GetNumShapeshiftForms() or 0 do

@@ -22,6 +22,7 @@ local adrenalineIcon = 8
 local L = mod:SetDefaultLocale({
 	warmup_trigger = "Too late, friends! Nefarius' corruption has taken hold...I cannot...control myself.",
 })
+mod:SetChatEnableTriggers(L.warmup_trigger) -- 3.3.5: enable the module on the warmup yell/emote (no target yet)
 
 --------------------------------------------------------------------------------
 -- Initialization

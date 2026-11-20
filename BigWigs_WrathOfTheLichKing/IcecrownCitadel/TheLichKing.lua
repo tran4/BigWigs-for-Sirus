@@ -37,6 +37,7 @@ local L = mod:SetDefaultLocale({
 	valkyr_low = "Valkyr below 55%",
 	plague_jump = "Necrotic Plague jumped to %s",
 })
+mod:SetChatEnableTriggers(L.warmup_trigger) -- 3.3.5: enable the module on the warmup yell/emote (no target yet)
 
 --------------------------------------------------------------------------------
 -- Initialization

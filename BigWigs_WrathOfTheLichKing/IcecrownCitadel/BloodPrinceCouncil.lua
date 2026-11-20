@@ -14,7 +14,6 @@ mod:SetWinMobs(37970, 37972, 37973) -- 3.3.5: DBM kills when all of them died
 -- Locals
 --
 
-local sparksList = {}
 local prevSparks = 0
 local bombIcon = 7
 local bombsMarked = {} -- [guid] = true
@@ -42,6 +41,7 @@ local L = mod:SetDefaultLocale({
 	switch_message = "Switch target to: %s",
 	switch_soon = "Target switch soon",
 })
+mod:SetChatEnableTriggers(L.warmup_trigger) -- 3.3.5: enable the module on the warmup yell/emote (no target yet)
 
 --------------------------------------------------------------------------------
 -- Initialization
@@ -93,7 +93,6 @@ function mod:OnBossEnable()
 end
 
 function mod:OnEngage()
-	sparksList = {}
 	bombIcon = 7
 	self:StopBar(CL.active)
 	self:Berserk(600)
@@ -223,12 +222,10 @@ end
 function mod:GlitteringSparks(args)
 	if not self:Player(args.destFlags) then return end
 	if args.time - prevSparks > 3 then
-		sparksList = {}
 		self:CDBar(71807, 20)
 	end
 	prevSparks = args.time
-	sparksList[#sparksList + 1] = args.destName
-	self:TargetsMessage(71807, "yellow", sparksList, nil, nil, nil, 1)
+	-- 3.3.5: no message with the list of the targets, it hits most of the raid (user's request), only the bar
 end
 
 function mod:DarkNucleus(args)

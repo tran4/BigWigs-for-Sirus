@@ -487,6 +487,18 @@ end
 -- @number zoneId A singular specific zone ID
 -- @return boolean
 -- @within Enable triggers
+--- 3.3.5: the texts of the yells/emotes (also of other NPCs: an intro, a warmup) that enable the module when it isn't enabled
+-- yet (no target on the boss), see EnableModulesByChat in Core.lua. The module still has to handle the event itself.
+-- @param ... the localized texts (plain, matched as a substring)
+function boss:SetChatEnableTriggers(...)
+	local list = {}
+	for i = 1, select("#", ...) do
+		local text = select(i, ...)
+		if type(text) == "string" and text ~= "" then list[#list + 1] = text end
+	end
+	self.chatEnableTriggers = list
+end
+
 function boss:IsZoneID(zoneId)
 	if self.mapId then
 		return self.mapId == zoneId
@@ -2638,6 +2650,7 @@ do
 			twipe(icons) -- Wipe icon cache
 			twipe(spells)
 			if self.OnWin then self:OnWin() end
+			self.lastWinTime = GetTime() -- 3.3.5: no re-enabling by the yells of a defeated boss, see EnableModulesByChat (Core.lua)
 			SimpleTimer(1, function() self:Disable() end) -- Delay a little to prevent re-enabling
 			self.isWinning = true -- Prevent a :CheckForWipe returning true during this 1 second delay
 			self:SendMessage("BigWigs_OnBossWin", self)

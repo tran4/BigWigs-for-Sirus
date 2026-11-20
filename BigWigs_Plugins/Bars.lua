@@ -1222,14 +1222,14 @@ do
 			local bar = tmp[i]
 			if i > barLimit then
 				bar:SetAlpha(0)
-				if bar:Get("bigwigs:tooltip") then -- Icon tooltips are enabled and one exists for this bar
-					bar.candyBarIconFrame:EnableMouse(false)
+				if bar:Get("bigwigs:tooltip") and bar.bwIconMouse then -- Icon tooltips are enabled and one exists for this bar
+					bar.bwIconMouse:EnableMouse(false) -- 3.3.5: the icon is a Texture without mouse, see BigWigs_StartBar
 				end
 				bar:Set("bigwigs:notvisible", true)
 			elseif bar:Get("bigwigs:notvisible") then
 				bar:SetAlpha(1)
-				if bar:Get("bigwigs:tooltip") then
-					bar.candyBarIconFrame:EnableMouse(true)
+				if bar:Get("bigwigs:tooltip") and bar.bwIconMouse then
+					bar.bwIconMouse:EnableMouse(true) -- 3.3.5: see BigWigs_StartBar
 				end
 				bar:Set("bigwigs:notvisible", nil)
 			end
@@ -1256,6 +1256,10 @@ end
 
 local function barStopped(_, bar)
 	bar.candyBarIconFrame.bwID = nil
+	if bar.bwIconMouse then -- 3.3.5: the mouse frame of the icon tooltip, see BigWigs_StartBar
+		bar.bwIconMouse.bwID = nil
+		bar.bwIconMouse:Hide()
+	end
 	local indicatorFrame = bar:Get("bigwigs:indicatorFrame")
 	if indicatorFrame then
 		indicatorFrame:RemoveIndicators()
@@ -1882,8 +1886,19 @@ do
 		if db.iconTooltip and type(key) == "number" and key > 0 then
 			bar.candyBarIconFrame.bwID = key
 			bar:Set("bigwigs:tooltip", key)
-			bar.candyBarIconFrame:SetScript("OnEnter", OnEnterIcon)
-			bar.candyBarIconFrame:SetScript("OnLeave", OnLeaveIcon)
+			-- 3.3.5: a Texture has no scripts nor mouse (retail: it has), the tooltip uses a frame on top of the icon
+			local mouse = bar.bwIconMouse
+			if not mouse then
+				mouse = CreateFrame("Frame", nil, bar)
+				mouse:SetAllPoints(bar.candyBarIconFrame)
+				mouse:SetScript("OnEnter", OnEnterIcon)
+				mouse:SetScript("OnLeave", OnLeaveIcon)
+				bar.bwIconMouse = mouse
+			end
+			mouse.bwID = key
+			mouse:SetFrameLevel(bar:GetFrameLevel() + 5)
+			mouse:EnableMouse(true)
+			mouse:Show()
 		end
 		bar:SetPauseWhenDone(maxQueueDuration)
 		if db.emphasize and time < db.emphasizeTime then

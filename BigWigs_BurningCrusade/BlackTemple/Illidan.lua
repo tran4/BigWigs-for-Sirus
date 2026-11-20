@@ -34,6 +34,7 @@ local L = mod:SetDefaultLocale({
 	next_human = "Next Human Phase",
 	next_demon = "Next Demon Phase",
 })
+mod:SetChatEnableTriggers(L.warmup_trigger) -- 3.3.5: enable the module on the warmup yell/emote (no target yet)
 
 --------------------------------------------------------------------------------
 -- Initialization

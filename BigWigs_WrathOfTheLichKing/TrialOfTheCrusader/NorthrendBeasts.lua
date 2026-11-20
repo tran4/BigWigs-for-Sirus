@@ -52,6 +52,7 @@ local L = mod:SetDefaultLocale({
 	emerge_desc = "Show timer for emerge",
 	emerge_icon = "misc_arrowlup",
 })
+mod:SetChatEnableTriggers(L.warmup_trigger) -- 3.3.5: enable the module on the warmup yell/emote (no target yet)
 
 --------------------------------------------------------------------------------
 -- Initialization

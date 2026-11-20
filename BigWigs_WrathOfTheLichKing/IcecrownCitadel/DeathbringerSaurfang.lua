@@ -35,6 +35,7 @@ local L = mod:SetDefaultLocale({
 	warmup_trigger_alliance = "For every Horde soldier that you killed -- for every Alliance dog that fell, the Lich King's armies grew. Even now the val'kyr work to raise your fallen as Scourge.",
 	warmup_trigger_horde = "Kor'kron, move out! Champions, watch your backs. The Scourge have been...",
 })
+mod:SetChatEnableTriggers(L.warmup_trigger_alliance, L.warmup_trigger_horde) -- 3.3.5: enable the module on the warmup yell/emote (no target yet)
 
 --------------------------------------------------------------------------------
 -- Initialization

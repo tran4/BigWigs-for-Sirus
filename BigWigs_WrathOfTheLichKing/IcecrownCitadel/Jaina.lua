@@ -38,6 +38,7 @@ local L = mod:SetDefaultLocale({
 	wild_flame_near = "Дикое пламя рядом - отойдите.",
 	freezing = "Заморозка меток",
 })
+mod:SetChatEnableTriggers(L.warmup_trigger) -- 3.3.5: enable the module on the warmup yell/emote (no target yet)
 mod.displayName = L.bossName
 
 --------------------------------------------------------------------------------

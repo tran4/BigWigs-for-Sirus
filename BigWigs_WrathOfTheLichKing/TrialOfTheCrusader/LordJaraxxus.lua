@@ -23,6 +23,7 @@ local L = mod:SetDefaultLocale({
 	-- 3.3.5: DBM Sirus has no English text for this yell
 	warmup_trigger = "АГА! Получилось! Трепещи перед всевластным Вилфредом Непопамсом, мастером призыва! Ты покорен мне, демон!",
 })
+mod:SetChatEnableTriggers(L.warmup_trigger) -- 3.3.5: enable the module on the warmup yell/emote (no target yet)
 
 --------------------------------------------------------------------------------
 -- Initialization

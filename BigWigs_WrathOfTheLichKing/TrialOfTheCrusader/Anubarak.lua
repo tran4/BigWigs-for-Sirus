@@ -49,6 +49,7 @@ local L = mod:SetDefaultLocale({
 	emerge_message = "Anub'arak emerges",
 	emerge_soon = "Emerge in 10 seconds",
 })
+mod:SetChatEnableTriggers(L.roleplay_trigger) -- 3.3.5: enable the module on the warmup yell/emote (no target yet)
 
 --------------------------------------------------------------------------------
 -- Initialization

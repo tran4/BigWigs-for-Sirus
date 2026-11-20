@@ -28,6 +28,7 @@ local L = mod:SetDefaultLocale({
 	stage3_trigger = "Come, gentle night; and give me back my Romulo!",
 	poison = "%s on >%s< (%d)",
 })
+mod:SetChatEnableTriggers(L.warmup_trigger) -- 3.3.5: enable the module on the warmup yell/emote (no target yet)
 mod.displayName = L.bossName
 
 --------------------------------------------------------------------------------

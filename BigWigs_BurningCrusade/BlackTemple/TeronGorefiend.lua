@@ -27,6 +27,7 @@ local L = mod:SetDefaultLocale({
 	stage3_name = "Власть Тьмы",
 	stage_bar = "Скоро Фаза: %s",
 })
+mod:SetChatEnableTriggers(L.warmup_trigger) -- 3.3.5: enable the module on the warmup yell/emote (no target yet)
 
 --------------------------------------------------------------------------------
 -- Initialization

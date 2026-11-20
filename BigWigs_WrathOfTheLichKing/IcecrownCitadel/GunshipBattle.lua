@@ -38,6 +38,7 @@ local L = mod:SetDefaultLocale({
 	adds_icon = addsIcon,
 	adds_soon = "New adds soon",
 })
+mod:SetChatEnableTriggers(L.warmup_trigger_alliance, L.warmup_trigger_horde) -- 3.3.5: enable the module on the warmup yell/emote (no target yet)
 
 --------------------------------------------------------------------------------
 -- Initialization

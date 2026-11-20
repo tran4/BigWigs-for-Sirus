@@ -59,7 +59,43 @@ do
 		end
 		currentEvent = nil
 	end
+	-- 3.3.5: a boss module only enables on a target/mouseover of an enable mob, so a boss that starts the fight with a yell
+	-- while it can't be targeted (Novos the Summoner in his shield) or is far away (a balcony, a throne) was missed. Whilst
+	-- the core is enabled, a yell/emote/say whose source is the name of a boss module of the current zone enables that
+	-- module, before the event is dispatched, so the module gets this yell too (DBM always listens in the zone).
+	local chatEnableEvents = {
+		CHAT_MSG_MONSTER_YELL = true, CHAT_MSG_MONSTER_EMOTE = true, CHAT_MSG_RAID_BOSS_EMOTE = true, CHAT_MSG_MONSTER_SAY = true,
+	}
+	local chatEnableActive = false
+	-- A module can also list the texts of the yells/emotes of other NPCs that start its warmup (SetChatEnableTriggers): the
+	-- Horde intro of Deathbringer Saurfang is yelled by High Overlord Saurfang.
+	local function MatchesTrigger(module, msg)
+		local triggers = module.chatEnableTriggers
+		if not triggers or type(msg) ~= "string" then return false end
+		for i = 1, #triggers do
+			local text = triggers[i]
+			if msg == text or msg:find(text, nil, true) then return true end
+		end
+		return false
+	end
+	local function EnableModulesByChat(event, msg, sender)
+		if type(sender) ~= "string" then return end
+		local _, _, _, _, _, _, _, instanceID = GetInstanceInfo()
+		if not instanceID or instanceID == 0 then return end
+		local now = GetTime()
+		for _, module in next, bosses do
+			if not module:IsEnabled() and not module:IsTrashModule() and module:IsZoneID(instanceID)
+				and (not module.lastWinTime or now - module.lastWinTime > 120)
+				and ((sender ~= "" and module.displayName == sender and not module.VerifyEnable) or MatchesTrigger(module, msg)) then
+				module:Enable()
+				module:Debug("Enabled by the chat event", event, sender)
+			end
+		end
+	end
 	bwUtilityFrame:SetScript("OnEvent", function(_, event, ...)
+		if chatEnableActive and chatEnableEvents[event] then
+			Compat.SafeCall(EnableModulesByChat, event, ...) -- 3.3.5: see above
+		end
 		dispatch(event, ...)
 		-- 3.3.5: forward to modern events that are emulated by this event
 		local aliases = eventAliasTargets[event]
@@ -79,6 +115,7 @@ do
 	-- Is a real (3.3.5) event still needed by anyone, directly or through an alias?
 	local function isRealEventNeeded(real)
 		if eventMap[real] and next(eventMap[real]) then return true end
+		if chatEnableActive and chatEnableEvents[real] then return true end -- 3.3.5: see EnableModulesByChat
 		local aliases = eventAliasTargets[real]
 		if aliases then
 			for i = 1, #aliases do
@@ -107,6 +144,18 @@ do
 			end
 		elseif not unsupportedEvents[event] then
 			if not isRealEventNeeded(event) then
+				bwUtilityFrame:UnregisterEvent(event)
+			end
+		end
+	end
+
+	--- 3.3.5: listen to the boss yells/emotes for EnableModulesByChat whilst the core is enabled
+	function core:SetChatEnable(state)
+		chatEnableActive = state and true or false
+		for event in next, chatEnableEvents do
+			if chatEnableActive then
+				bwUtilityFrame:RegisterEvent(event)
+			elseif not isRealEventNeeded(event) then
 				bwUtilityFrame:UnregisterEvent(event)
 			end
 		end
@@ -337,6 +386,7 @@ do
 			end
 			core.UnregisterEvent(mod, "PLAYER_LOGIN")
 
+			core:SetChatEnable(false) -- 3.3.5: see EnableModulesByChat
 			core:SendMessage("BigWigs_StopConfigureMode")
 			if BigWigsOptions then
 				BigWigsOptions:Close()
@@ -387,6 +437,7 @@ do
 			for i = 1, #plugins do
 				plugins[i]:Enable()
 			end
+			core:SetChatEnable(true) -- 3.3.5: enable boss modules by their yells, see EnableModulesByChat
 
 			-- 3.3.5: NPC scanning only sees targets/mouseover/focus (no nameplate units), enable trash modules on zone in like retail
 			if loader.isModern or loader.Compat.isSirus then -- We cannot use NPC scanning in modern clients, so enable trash modules on zone in

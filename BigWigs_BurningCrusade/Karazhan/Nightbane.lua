@@ -27,6 +27,7 @@ local L = mod:SetDefaultLocale({
 	summon_trigger = "An ancient being awakens in the distance...",
 	summon = "Nightbane incoming",
 })
+mod:SetChatEnableTriggers(L.summon_trigger) -- 3.3.5: enable the module on the warmup yell/emote (no target yet)
 mod.displayName = L.bossName
 
 --------------------------------------------------------------------------------
