@@ -592,6 +592,11 @@ Compat.areaToInstance = {
 	[729] = 547, -- The Slave Pens
 	[728] = 545, -- The Steamvault
 	[727] = 546, -- The Underbog
+	-- Sirus maps of the reworked dungeons (area ids from the "zoneId" loads of the players' WeakAuras, WA на ключи)
+	[836] = 542, -- The Blood Furnace (Sirus)
+	[839] = 547, -- The Slave Pens (Sirus)
+	[843] = 557, -- Mana-Tombs (Sirus)
+	[849] = 543, -- Hellfire Ramparts (Sirus)
 	-- The Burning Crusade raids
 	[797] = 564, -- Black Temple
 	[848] = 564, -- Black Temple (Sirus alternative map)
@@ -762,9 +767,34 @@ function Compat.GetCurrentAreaID()
 	return id
 end
 
-function Compat.GetInstanceIDFromArea(areaID)
+do
+	-- Instance id by the zone name (both locales), for Sirus maps whose area id is not in the table above:
+	-- DBM loads its modules by the zone name too (X-DBM-Mod-LoadZone)
+	local byName
+	function Compat.GetInstanceIDByName(name)
+		if type(name) ~= "string" or name == "" then return nil end
+		if not byName then
+			byName = {}
+			for id, names in next, Compat.instanceNames do
+				if id < Compat.CUSTOM_INSTANCE_OFFSET then
+					for i = 1, #names do byName[names[i]:lower()] = id end
+				end
+			end
+		end
+		return byName[name:lower()]
+	end
+end
+
+function Compat.GetInstanceIDFromArea(areaID, zoneName)
 	if not areaID or areaID <= 0 then return 0 end
-	return Compat.areaToInstance[areaID] or (Compat.CUSTOM_INSTANCE_OFFSET + areaID)
+	local id = Compat.areaToInstance[areaID]
+	if id then return id end
+	id = Compat.GetInstanceIDByName(zoneName)
+	if id then
+		Compat.areaToInstance[areaID] = id -- remember the Sirus map
+		return id
+	end
+	return Compat.CUSTOM_INSTANCE_OFFSET + areaID
 end
 
 --- C_Map.GetBestMapForUnit replacement, only "player" is supported
@@ -844,7 +874,7 @@ do
 		local difficultyID = convertDifficulty(instanceType, difficultyIndex, difficultyName, maxPlayers, dynamicDifficulty, isDynamic)
 		local instanceID = 0
 		if instanceType and instanceType ~= "none" then
-			instanceID = Compat.GetInstanceIDFromArea(Compat.GetCurrentAreaID())
+			instanceID = Compat.GetInstanceIDFromArea(Compat.GetCurrentAreaID(), name)
 			Compat.LearnZoneName(instanceID, name)
 		end
 		return name, instanceType, difficultyID, difficultyName, maxPlayers, dynamicDifficulty, isDynamic, instanceID, maxPlayers, difficultyIndex

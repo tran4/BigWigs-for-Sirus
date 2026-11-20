@@ -1,0 +1,111 @@
+## Interface: 30300
+
+## Title: LittleWigs [|cffeda55fBurning Crusade|r]
+## Title-ruRU: LittleWigs [|cffeda55fBurning Crusade|r]
+## Notes: Boss warnings for The Burning Crusade 5-man dungeons (Sirus 3.3.5 port).
+## Notes-ruRU: Предупреждения о боссах подземелий The Burning Crusade на 5 игроков (порт для Sirus 3.3.5).
+## Author: Funkeh, Delk (3.3.5 port for Sirus)
+## Version: v12.1.23-sirus1
+## IconTexture: Interface\AddOns\BigWigs\Media\Icons\minimap_party
+
+## LoadOnDemand: 1
+## Dependencies: BigWigs
+
+## X-Category: Party
+## X-BigWigs-LoadOn-InstanceId: 269, 540, 542, 543, 545, 546, 547, 552, 553, 554, 555, 556, 557, 558, 560, 585
+
+!Locales\ruRU.lua
+!Locales\deDE.lua
+!Locales\esES.lua
+!Locales\esMX.lua
+!Locales\frFR.lua
+!Locales\itIT.lua
+!Locales\koKR.lua
+!Locales\ptBR.lua
+!Locales\zhCN.lua
+!Locales\zhTW.lua
+
+AuchenaiCrypts\Shirrak.lua
+AuchenaiCrypts\Maladaar.lua
+
+HellfireRamparts\Gargolmar.lua
+HellfireRamparts\Omor.lua
+HellfireRamparts\Vazruden.lua
+
+MagistersTerrace\SelinFireheart.lua
+MagistersTerrace\Vexallus.lua
+MagistersTerrace\PriestessDelrissa.lua
+MagistersTerrace\KaelthasSunstrider.lua
+MagistersTerrace\Trash.lua
+
+ManaTombs\Pandemonius.lua
+ManaTombs\Tavarok.lua
+ManaTombs\Yor.lua
+ManaTombs\Shaffar.lua
+ManaTombs\Trash.lua
+
+OldHillsbradFoothills\Drake.lua
+OldHillsbradFoothills\Skarloc.lua
+OldHillsbradFoothills\EpochHunter.lua
+OldHillsbradFoothills\Trash.lua
+
+SethekkHalls\Syth.lua
+SethekkHalls\Anzu.lua
+SethekkHalls\Ikiss.lua
+
+ShadowLabyrinth\Hellmaw.lua
+ShadowLabyrinth\Blackheart.lua
+ShadowLabyrinth\Vorpil.lua
+ShadowLabyrinth\Murmur.lua
+
+TheArcatraz\Zereketh.lua
+TheArcatraz\Dalliah.lua
+TheArcatraz\Soccothrates.lua
+TheArcatraz\Skyriss.lua
+TheArcatraz\Trash.lua
+
+TheBlackMorass\ChronoLordDeja.lua
+TheBlackMorass\Temporus.lua
+TheBlackMorass\Aeonus.lua
+TheBlackMorass\Trash.lua
+
+TheBloodFurnace\TheMaker.lua
+TheBloodFurnace\Broggok.lua
+TheBloodFurnace\Kelidan.lua
+
+TheBotanica\Sarannis.lua
+TheBotanica\Freywinn.lua
+TheBotanica\Thorngrin.lua
+TheBotanica\Laj.lua
+TheBotanica\WarpSplinter.lua
+
+TheMechanar\Capacitus.lua
+TheMechanar\Ironhand.lua
+TheMechanar\Gyrokill.lua
+TheMechanar\Sepethrea.lua
+TheMechanar\Pathaleon.lua
+
+TheShatteredHalls\Nethekurse.lua
+TheShatteredHalls\Porung.lua
+TheShatteredHalls\Omrogg.lua
+TheShatteredHalls\KargathBladefist.lua
+TheShatteredHalls\Trash.lua
+
+TheSlavePens\Mennu.lua
+TheSlavePens\Rokmar.lua
+TheSlavePens\Quagmirran.lua
+TheSlavePens\Trash.lua
+TheSlavePens\Ahune.lua
+
+TheSteamvault\Thespia.lua
+TheSteamvault\Steamrigger.lua
+TheSteamvault\Kalithresh.lua
+
+TheUnderbog\Hungarfen.lua
+TheUnderbog\Ghazan.lua
+TheUnderbog\Muselek.lua
+TheUnderbog\TheBlackStalker.lua
+
+MythicKeys\Affixes.lua
+
+!Options.lua
