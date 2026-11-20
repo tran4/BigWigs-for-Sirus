@@ -2089,7 +2089,9 @@ do
 		if not version then
 			return L.missingAddOnPopup:format("LittleWigs")
 		end
-		return (string.find(version, "-", nil, true) and L.littlewigsAlphaRelease or L.littlewigsOfficialRelease):format(version)
+		-- 3.3.5: "-sirus1" is the release of the Sirus port, not an alpha
+		local isAlpha = string.find(version, "-", nil, true) and not string.find(version, "-sirus", nil, true)
+		return (isAlpha and L.littlewigsAlphaRelease or L.littlewigsOfficialRelease):format(version)
 	end
 
 	local currentlyOpenContainer, openPath

@@ -1015,6 +1015,11 @@ do
 		end
 
 		-- check LittleWigs version
+		-- 3.3.5: there is no main "LittleWigs" addon for Sirus, only the content addons (LittleWigs_BurningCrusade,
+		-- LittleWigs_WrathOfTheLichKing), their version is the LittleWigs version (else the options say it is missing)
+		if name ~= "LittleWigs" and strfind(name, "^LittleWigs_") and not public.littlewigsVersion then
+			public.littlewigsVersion = GetAddOnMetadata(i, "Version")
+		end
 		if name == "LittleWigs" then
 			if GetAddOnMetadata(i, "X-LittleWigs-Repo") then
 				public.usingLittleWigsRepo = true
