@@ -940,7 +940,8 @@ BigWigs:AddColors("Valithria Dreamwalker", {
 	[70751] = {"blue","yellow"},
 	[70935] = "orange",
 	[71179] = {"blue","yellow"},
-	[72483] = {"orange","yellow"},
+	[72483] = "yellow",
+	portals = "orange",
 })
 
 BigWigs:AddSounds("Valithria Dreamwalker", {
@@ -949,6 +950,7 @@ BigWigs:AddSounds("Valithria Dreamwalker", {
 	[70935] = "alert",
 	[71179] = "underyou",
 	[72483] = "info",
+	portals = "info",
 })
 
 BigWigs:AddColors("Sindragosa", {

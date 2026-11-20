@@ -54,6 +54,7 @@ do
 		local t = GetTime()
 		if t >= bar.exp then
 			if bar.pauseWhenDone then
+				bar.candyBarExpired = true -- 3.3.5: a cooldown bar waiting at 0, see BigWigs_StartBar in Bars.lua
 				bar:Pause()
 				bar.candyBarBar:SetMinMaxValues(-1, 0)
 				bar.candyBarBar:SetValue(0)
@@ -377,6 +378,7 @@ function barPrototype:SetDuration(duration) self.remaining = duration end
 --- Shows the bar and starts it.
 -- @param maxValue Number. If you don't wish your bar to start full, you can set a max value. A maxValue of 10 on a bar with a duration of 5 would start it at 50%.
 function barPrototype:Start(maxValue)
+	self.candyBarExpired = nil -- 3.3.5: see barUpdate
 	self.running = true
 	local time = self.remaining
 	self.gap = maxValue and maxValue-time or 0
@@ -437,6 +439,7 @@ do
 		bar.funcs = nil
 		bar.running = nil
 		bar.paused = nil
+		bar.candyBarExpired = nil -- 3.3.5: see barUpdate
 		bar.pauseWhenDone = nil
 		bar.maxPauseDuration = nil
 		if bar.maxPauseDurationCallback then

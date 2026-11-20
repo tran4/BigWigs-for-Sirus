@@ -1882,6 +1882,17 @@ do
 			return
 		end
 		self:StopSpecificBar(nil, module, text, eventId)
+		-- 3.3.5: a cooldown bar stays at 0 until stopped, a module from DBM may start the next one with another text (a count:
+		-- "Nightmare Portal (2)") without stopping it. A new bar of the same option of the module removes the expired ones.
+		if key and normalAnchor then
+			for _, anchor in next, {normalAnchor, emphasizeAnchor} do
+				for k in next, anchor.bars do
+					if k.candyBarExpired and k:Get("bigwigs:module") == module and k:Get("bigwigs:option") == key then
+						k:Stop()
+					end
+				end
+			end
+		end
 		local bar = self:CreateBar(module, key, text, time, icon, eventId, spellIndicators)
 		if db.iconTooltip and type(key) == "number" and key > 0 then
 			bar.candyBarIconFrame.bwID = key

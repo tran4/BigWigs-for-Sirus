@@ -251,6 +251,8 @@ BigWigsAPI.SetBossModuleLocale("Valithria Dreamwalker", {
 
 	portals_open = "Открытие порталов",
 	portals_close = "Закрытие порталов",
+	portals = "Открытие/закрытие порталов",
+	portals_desc = "Полосы и сообщения об открытии и закрытии порталов.",
 })
 
 BigWigsAPI.SetBossModuleLocale("Sindragosa", {

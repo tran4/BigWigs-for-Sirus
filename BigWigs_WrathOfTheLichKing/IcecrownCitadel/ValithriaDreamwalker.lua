@@ -34,6 +34,9 @@ local L = mod:SetDefaultLocale({
 
 	portals_open = "Portals open",
 	portals_close = "Portals close",
+	-- 3.3.5: the portals opening/closing apart from the Nightmare Portal cooldown (DBM: TimerPortalsOpen, WarnPortalOpen)
+	portals = "Portals open/close",
+	portals_desc = "Bars and messages for the opening and the closing of the portals.",
 })
 
 --------------------------------------------------------------------------------
@@ -44,7 +47,8 @@ local skeletonMarker = mod:AddMarkerOption(true, "npc", 8, 70933, 8) -- Blazing 
 function mod:GetOptions()
 	return {
 		"berserk",
-		72483, -- Nightmare Portal
+		{72483, "OFF"}, -- Nightmare Portal (3.3.5: the cooldown bar, off by default on request)
+		"portals", -- 3.3.5: portals open/close
 		{70873, "ME_ONLY"}, -- Emerald Vigor
 		70933, -- Summon Blazing Skeleton
 		skeletonMarker,
@@ -118,9 +122,11 @@ end
 
 function mod:Portals()
 	self:CancelTimer(self.portalTimer)
+	-- 3.3.5: a cooldown bar stays at 0 until stopped, the next one has another count in its text
+	self:StopBar(CL.count:format(self:SpellName(72483), portalCount + 1))
 	self:Message(72483, "yellow")
 	self:PlaySound(72483, "info")
-	self:Bar(72483, 15, L.portals_open)
+	self:Bar("portals", 15, L.portals_open, 72483)
 	self:ScheduleTimer("PortalsOpen", 15)
 	self:DelayedMessage(72483, 41, "yellow", CL.soon:format(self:SpellName(72483)))
 	portalCount = portalCount + 1
@@ -129,8 +135,9 @@ function mod:Portals()
 end
 
 function mod:PortalsOpen()
-	self:Message(72483, "orange", L.portals_open)
-	self:Bar(72483, 10, L.portals_close)
+	self:Message("portals", "orange", L.portals_open, 72483)
+	self:PlaySound("portals", "info")
+	self:Bar("portals", 10, L.portals_close, 72483)
 end
 
 function mod:BlazingSkeletonTimer()
