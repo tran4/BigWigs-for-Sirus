@@ -2,6 +2,9 @@
 -- Module Declaration
 --
 -- 3.3.5: written for Sirus from DBM Sirus (DBM-Naxx/MilitaryQuarter/Razuvious.lua), draft by tools/dbm2bw
+-- Heroic casts and debuffs not in DBM, from the players' WeakAuras (WA: "Naxx", group "instruktor"): the casts by the
+-- ids from the spell cache of WeakAuras (Взмах, Парирование, Сокрушительный удар, Боевой клич), Dark Bindings and Dark
+-- Pact on you.
 
 local mod, CL = BigWigs:NewBoss("Instructor Razuvious", 533, 1607)
 if not mod then return end
@@ -25,6 +28,8 @@ local L = mod:SetDefaultLocale({
 	engage_trigger4 = "Sweep the leg... Do you have a problem with that?",
 
 	shield_wall_soon = "Shield Wall ends in 5 seconds",
+
+
 })
 
 --------------------------------------------------------------------------------
@@ -37,6 +42,12 @@ function mod:GetOptions()
 		29060, -- Taunt
 		29061, -- Shield Wall
 		605, -- Mind Control
+		372069, -- WA: "Взмах"
+		372070, -- WA: "Парирование"
+		372071, -- WA: "Сокрушительный удар"
+		372072, -- WA: "Боевой клич"
+		373475, -- Dark Bindings (WA)
+		373479, -- Dark Pact (WA)
 	}
 end
 
@@ -45,6 +56,8 @@ function mod:OnBossEnable()
 	self:Log("SPELL_CAST_SUCCESS", "Taunt", 29060)
 	self:Log("SPELL_CAST_SUCCESS", "ShieldWall", 29061)
 	self:Log("SPELL_AURA_APPLIED", "MindControl", 605)
+	self:Log("SPELL_CAST_START", "HeroicCast", 372069, 372074, 372070, 372075, 372071, 372076, 372072, 372077) -- WA
+	self:Log("SPELL_AURA_APPLIED", "DarkDebuff", 373475, 373476, 373479, 373480) -- WA
 	self:Death("UnderstudyDeath", 16803)
 	self:RegisterEvent("CHAT_MSG_MONSTER_YELL")
 end
@@ -97,5 +110,23 @@ function mod:UnderstudyDeath(args)
 	if args.destGUID == wallGUID then
 		self:StopBar(29061)
 		self:CancelDelayedMessage(L.shield_wall_soon)
+	end
+end
+
+--------------------------------------------------------------------------------
+-- Heroic (WA: "Naxx", group "instruktor")
+--
+
+local heroicKey = {[372074] = 372069, [372075] = 372070, [372076] = 372071, [372077] = 372072} -- the second ids of the WA spells
+function mod:HeroicCast(args)
+	local key = heroicKey[args.spellId] or args.spellId
+	self:Message(key, "orange", CL.casting:format(args.spellName))
+end
+
+function mod:DarkDebuff(args)
+	if self:Me(args.destGUID) then
+		local key = (args.spellId == 373475 or args.spellId == 373476) and 373475 or 373479
+		self:PersonalMessage(key)
+		self:PlaySound(key, "alarm")
 	end
 end

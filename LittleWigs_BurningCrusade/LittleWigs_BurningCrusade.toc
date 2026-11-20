@@ -107,5 +107,6 @@ TheUnderbog\Muselek.lua
 TheUnderbog\TheBlackStalker.lua
 
 MythicKeys\Affixes.lua
+MythicKeys\TrashTimers.lua
 
 !Options.lua

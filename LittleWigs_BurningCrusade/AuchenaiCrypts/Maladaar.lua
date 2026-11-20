@@ -25,6 +25,7 @@ local L = mod:SetDefaultLocale({
 function mod:GetOptions()
 	return {
 		32346, -- Stolen Soul
+		32421, -- Soul Scream (3.3.5: WA: "WA на ключи - автор Раэнис х3")
 		"avatar", -- Avatar of the Martyred
 	}
 end
@@ -32,6 +33,8 @@ end
 function mod:OnBossEnable()
 	self:Log("SPELL_AURA_APPLIED", "StolenSoul", 32346)
 	self:Log("SPELL_CAST_SUCCESS", "SummonAvatar", 32424)
+	self:Log("SPELL_CAST_START", "StolenSoulCast", 32346, 199105) -- 3.3.5: WA: "WA на ключи - автор Раэнис х3", 15s
+	self:Log("SPELL_CAST_SUCCESS", "SoulScream", 32421) -- 3.3.5: WA: "WA на ключи - автор Раэнис х3", 20s
 
 	self:CheckForEngage()
 	self:Death("Win", 18373)
@@ -62,4 +65,14 @@ function mod:UNIT_HEALTH(event, unit)
 		self:UnregisterEvent(event)
 		self:Message("avatar", "yellow", CL.soon:format(self:SpellName(32424)), false) -- Summon Avatar soon
 	end
+end
+
+-- 3.3.5: WA: "WA на ключи - автор Раэнис х3"
+function mod:StolenSoulCast()
+	self:CDBar(32346, 15)
+end
+
+function mod:SoulScream(args)
+	self:Message(32421, "orange")
+	self:CDBar(32421, 20)
 end

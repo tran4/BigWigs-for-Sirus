@@ -10,6 +10,7 @@ BigWigs:AddSounds("Shirrak the Dead Watcher", {
 })
 
 BigWigs:AddColors("Exarch Maladaar", {
+	[32421] = "orange",
 	["avatar"] = {"red","yellow"},
 })
 
@@ -27,6 +28,7 @@ BigWigs:AddSounds("Watchkeeper Gargolmar", {
 })
 
 BigWigs:AddColors("Omor the Unscarred", {
+	[31901] = "yellow",
 })
 
 BigWigs:AddSounds("Omor the Unscarred", {
@@ -401,6 +403,7 @@ BigWigs:AddSounds("Mennu the Betrayer", {
 
 BigWigs:AddColors("Rokmar the Crackler", {
 	[34970] = "green",
+	[35008] = "orange",
 })
 
 BigWigs:AddSounds("Rokmar the Crackler", {
@@ -489,4 +492,10 @@ BigWigs:AddSounds("Mythic Keystone Affixes", {
 	[382486] = "alert",
 	["orbs"] = "info",
 	["volcano"] = "alarm",
+})
+
+BigWigs:AddColors("Key Trash Timers", {
+})
+
+BigWigs:AddSounds("Key Trash Timers", {
 })

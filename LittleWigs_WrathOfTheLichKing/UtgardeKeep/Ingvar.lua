@@ -32,6 +32,7 @@ function mod:GetOptions()
 		{42669, "CASTBAR"}, -- Smash
 		{42708, "CASTBAR"}, -- Staggering Roar
 		42730, -- Woe Strike
+		42748, -- Shadow Axe (3.3.5: WA: "WA на ключи - автор Раэнис х3")
 	}, {
 		[42669] = "general",
 		[42730] = CL.stage:format(2),
@@ -49,6 +50,7 @@ function mod:OnBossEnable()
 	self:Log("SPELL_CAST_START", "Roar", 42708, 42729, 59708, 59734) -- Staggering Roar, Dreadful Roar on normal / heroic
 	self:Log("SPELL_AURA_APPLIED", "WoeStrike", 42730, 59735) -- normal / heroic
 	self:Log("SPELL_AURA_REMOVED", "WoeStrikeRemoved", 42730, 59735)
+	self:Log("SPELL_CAST_SUCCESS", "ShadowAxe", 42748) -- 3.3.5: WA: "WA на ключи - автор Раэнис х3", 9s
 
 	self:Death("Deaths", 23954, 23980)
 	self:RegisterEvent("CHAT_MSG_MONSTER_YELL")
@@ -103,4 +105,9 @@ function mod:CHAT_MSG_MONSTER_YELL(_, msg)
 	if msg == L.defeat_trigger or msg:find(L.defeat_trigger, nil, true) then
 		self:Win()
 	end
+end
+
+function mod:ShadowAxe(args) -- 3.3.5: WA: "WA на ключи - автор Раэнис х3"
+	self:Message(42748, "orange")
+	self:Bar(42748, 9, CL.other:format(args.spellName, CL.active))
 end

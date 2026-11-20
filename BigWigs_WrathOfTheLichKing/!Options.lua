@@ -180,22 +180,27 @@ BigWigs:AddSounds("Maexxna", {
 
 BigWigs:AddColors("Noth the Plaguebringer", {
 	[29208] = {"orange","yellow"},
-	[29213] = "yellow",
+	[29213] = {"blue","yellow"},
+	[29214] = "blue",
 	["adds"] = "red",
 	["teleport"] = {"orange","yellow"},
 })
 
 BigWigs:AddSounds("Noth the Plaguebringer", {
+	[29213] = "alarm",
+	[29214] = "warning",
 	["adds"] = "alert",
 	["teleport"] = "info",
 })
 
 BigWigs:AddColors("Heigan the Unclean", {
 	[30122] = "green",
+	[373551] = {"blue","red"},
 	["teleport"] = {"orange","yellow"},
 })
 
 BigWigs:AddSounds("Heigan the Unclean", {
+	[373551] = "warning",
 	["teleport"] = "long",
 })
 
@@ -274,12 +279,17 @@ BigWigs:AddSounds("Gluth", {
 BigWigs:AddColors("Thaddius", {
 	[28089] = {"red","yellow"},
 	[28338] = "yellow",
+	[373308] = "orange",
+	[373418] = "yellow",
+	[373424] = {"blue","orange"},
 	["polarity_changed"] = "blue",
 	["polarity_same"] = "green",
 })
 
 BigWigs:AddSounds("Thaddius", {
 	[28089] = "long",
+	[373418] = "info",
+	[373424] = "alarm",
 	["polarity_changed"] = "warning",
 	["polarity_same"] = "info",
 })
@@ -314,6 +324,12 @@ BigWigs:AddSounds("Kel'Thuzad", {
 	[27810] = {"alarm","warning"},
 	[27819] = {"alarm","warning"},
 	["stages"] = "long",
+})
+
+BigWigs:AddColors("Naxxramas Heroic", {
+})
+
+BigWigs:AddSounds("Naxxramas Heroic", {
 })
 
 BigWigs:AddColors("Ulduar Trash", {
@@ -750,6 +766,7 @@ BigWigs:AddSounds("Lord Marrowgar", {
 
 BigWigs:AddColors("Lady Deathwhisper", {
 	[70674] = {"blue","yellow"},
+	[70768] = "blue",
 	[70900] = "red",
 	[70901] = "red",
 	[71001] = {"blue","yellow"},
@@ -766,6 +783,7 @@ BigWigs:AddColors("Lady Deathwhisper", {
 
 BigWigs:AddSounds("Lady Deathwhisper", {
 	[70674] = "info",
+	[70768] = "alarm",
 	[71001] = "underyou",
 	[71204] = "alarm",
 	[71236] = "alarm",

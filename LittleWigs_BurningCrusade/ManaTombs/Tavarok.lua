@@ -56,6 +56,9 @@ end
 function mod:Earthquake(args)
 	self:Message(33919, "orange", CL.casting:format(args.spellName))
 	self:PlaySound(33919, "alarm") -- DBM: stun soon
+	if self:Difficulty() == 23 then
+		self:CDBar(33919, 72) -- 3.3.5: WA: "WA на ключи - автор Раэнис х3", the mythic keys
+	end
 end
 
 do
@@ -63,7 +66,9 @@ do
 	function mod:EarthquakeApplied(args)
 		if args.time - prev > 3 then
 			prev = args.time
-			self:CDBar(33919, 22)
+			if self:Difficulty() ~= 23 then
+				self:CDBar(33919, 22) -- DBM Sirus (72s on the mythic keys, WA: "WA на ключи - автор Раэнис х3")
+			end
 		end
 	end
 end

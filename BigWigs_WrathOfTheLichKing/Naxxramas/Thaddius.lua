@@ -4,6 +4,9 @@
 -- 3.3.5: written for Sirus from DBM Sirus (DBM-Naxx/ConstructQuarter/Thaddius.lua), draft by tools/dbm2bw
 -- Not ported: the Polarity Shift arrows and the health frame of Stalagg/Feugen.
 -- Stalagg and Feugen are fought first: their deaths do not win, the pause before Thaddius is covered by the wipe delay.
+-- Heroic timers not in DBM, from the players' WeakAuras (WA: "Naxx", their triggers keep Thaddius as the source):
+-- Activate Transformers (373418) 80s after the cast, Backlash (373424, 373425, 373578, 373579) 18s after the start of
+-- its cast, 373308 30s after the start of its cast; Polarity Shift also by the name (the heroic id may differ).
 
 local mod, CL = BigWigs:NewBoss("Thaddius", 533, 1613)
 if not mod then return end
@@ -38,6 +41,8 @@ local L = mod:SetDefaultLocale({
 	polarity_same_icon = 28089,
 	negative = "negative",
 	positive = "positive",
+
+
 })
 
 --------------------------------------------------------------------------------
@@ -51,11 +56,19 @@ function mod:GetOptions()
 		"polarity_changed",
 		{"polarity_same", "OFF"},
 		28338, -- Magnetic Pull
+		373418, -- Activate Transformers (WA, heroic)
+		373424, -- Backlash (WA, heroic)
+		373308, -- WA, heroic
 	}
 end
 
 function mod:OnBossEnable()
 	self:Log("SPELL_CAST_START", "PolarityShift", 28089)
+	self:Log("SPELL_CAST_START", "PolarityShiftByName", "*") -- WA: Polarity Shift by the name
+	self:Log("SPELL_CAST_START", "Backlash", 373424, 373425, 373578, 373579) -- WA
+	self:Log("SPELL_CAST_SUCCESS", "Transformers", 373418) -- WA
+	self:Log("SPELL_CAST_START", "Puddle", 373308) -- WA
+	self:Log("SPELL_AURA_APPLIED", "BacklashApplied", 373424, 373425, 373578, 373579) -- WA: Backlash on you
 	self:RegisterUnitEvent("UNIT_AURA", nil, "player")
 	self:RegisterEvent("CHAT_MSG_RAID_BOSS_EMOTE")
 	self:RegisterEvent("CHAT_MSG_MONSTER_YELL")
@@ -134,5 +147,44 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(_, msg)
 			self:CancelDelayedMessage(CL.soon:format(self:SpellName(28338)))
 			self:Berserk(365)
 		end
+	end
+end
+
+--------------------------------------------------------------------------------
+-- Heroic (WA: "Naxx")
+--
+
+function mod:PolarityShiftByName(args)
+	if args.spellId ~= 28089 and args.spellName == self:SpellName(28089) then -- Polarity Shift with another id
+		self:PolarityShift(args)
+	end
+end
+
+function mod:Backlash(args)
+	self:Message(373424, "orange", CL.casting:format(args.spellName))
+	self:CDBar(373424, 18)
+end
+
+do
+	local prev = 0
+	function mod:Transformers(args)
+		if args.time - prev > 5 then
+			prev = args.time
+			self:Message(373418, "yellow")
+			self:PlaySound(373418, "info")
+			self:CDBar(373418, 80)
+		end
+	end
+end
+
+function mod:Puddle(args)
+	self:Message(373308, "orange", CL.casting:format(args.spellName))
+	self:CDBar(373308, 30)
+end
+
+function mod:BacklashApplied(args)
+	if self:Me(args.destGUID) then
+		self:PersonalMessage(373424)
+		self:PlaySound(373424, "alarm")
 	end
 end

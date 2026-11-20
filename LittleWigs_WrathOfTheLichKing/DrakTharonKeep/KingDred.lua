@@ -16,6 +16,7 @@ function mod:GetOptions()
 	return {
 		{48878, "TANK_HEALER"}, -- Piercing Slash
 		59416, -- Raptor Call
+		22686, -- Bellowing Roar (3.3.5: DBM Sirus 15s, WA: "WA на ключи - автор Раэнис х3" 33s on the mythic keys)
 	}
 end
 
@@ -23,6 +24,8 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_APPLIED", "PiercingSlash", 48878)
 	self:Log("SPELL_CAST_SUCCESS", "PiercingSlashSuccess", 48878)
 	self:Log("SPELL_CAST_START", "RaptorCall", 59416)
+	self:Log("SPELL_CAST_START", "BellowingRoarStart", 22686) -- 3.3.5: WA: "WA на ключи - автор Раэнис х3"
+	self:Log("SPELL_CAST_SUCCESS", "BellowingRoar", 22686) -- 3.3.5: DBM Sirus
 end
 
 function mod:OnEngage()
@@ -47,4 +50,18 @@ function mod:RaptorCall(args)
 	self:Message(args.spellId, "cyan")
 	self:PlaySound(args.spellId, "info")
 	self:CDBar(args.spellId, 30.4) -- can randomly skip one cast
+end
+
+-- 3.3.5: Bellowing Roar, DBM Sirus 15s after the cast, 33s after the start of the cast on the mythic keys (WA: "WA на ключи - автор Раэнис х3")
+function mod:BellowingRoarStart(args)
+	self:Message(22686, "red", CL.casting:format(args.spellName))
+	if self:Difficulty() == 23 then
+		self:CDBar(22686, 33)
+	end
+end
+
+function mod:BellowingRoar()
+	if self:Difficulty() ~= 23 then
+		self:CDBar(22686, 15)
+	end
 end

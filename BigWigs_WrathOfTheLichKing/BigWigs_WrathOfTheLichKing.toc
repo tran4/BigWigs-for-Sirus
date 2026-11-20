@@ -49,6 +49,7 @@ Naxxramas\Gluth.lua
 Naxxramas\Thaddius.lua
 Naxxramas\Sapphiron.lua
 Naxxramas\KelThuzad.lua
+Naxxramas\Heroic.lua
 
 Ulduar\Trash.lua
 Ulduar\FlameLeviathan.lua

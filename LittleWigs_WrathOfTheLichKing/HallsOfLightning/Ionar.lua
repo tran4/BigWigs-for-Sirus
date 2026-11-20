@@ -5,6 +5,7 @@
 local mod, CL = BigWigs:NewBoss("Ionar", 602, 599)
 if not mod then return end
 mod:RegisterEnableMob(28546)
+mod:SetEncounterID(1984) -- 3.3.5: encounter emulation for the pull timers (the retail module has no encounter id)
 
 --------------------------------------------------------------------------------
 -- Initialization
@@ -14,6 +15,7 @@ function mod:GetOptions()
 	return {
 		{52658, "SAY"}, -- Static Overload
 		52770, -- Disperse
+		52780, -- Ball Lightning (3.3.5: WA: "WA на ключи - автор Раэнис х3")
 	}
 end
 
@@ -27,6 +29,7 @@ function mod:OnBossEnable()
 		self:Log("SPELL_AURA_REMOVED", "StaticOverloadRemoved", 59795)
 	end
 	self:Log("SPELL_CAST_START", "Disperse", 52770)
+	self:Log("SPELL_CAST_START", "BallLightning", 52780, 59800) -- 3.3.5: WA: "WA на ключи - автор Раэнис х3", 10s
 	self:Death("Win", 28546)
 end
 
@@ -50,4 +53,13 @@ end
 function mod:Disperse(args)
 	self:Message(args.spellId, "cyan")
 	self:PlaySound(args.spellId, "info")
+end
+
+-- 3.3.5: WA: "WA на ключи - автор Раэнис х3", the first Ball Lightning 10s after the pull yell, then every 10s
+function mod:OnEngage()
+	self:CDBar(52780, 10)
+end
+
+function mod:BallLightning()
+	self:CDBar(52780, 10)
 end

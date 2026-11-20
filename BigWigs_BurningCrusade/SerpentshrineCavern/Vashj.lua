@@ -3,6 +3,9 @@
 --
 -- 3.3.5: written for Sirus from DBM Sirus (DBM-Serpentshrine/Vashj.lua, heroic mode with custom spells), draft by tools/dbm2bw
 -- Not ported: marking the Tainted Elemental, the arrow to it, nameplate icons, announcing to the raid chat.
+-- Heroic timers not in DBM, from the players' WeakAuras (WA: "зс хм для новичков"): Shock Blast 7s from the start of
+-- the cast (310658, the id of the heroic Shock Blast in the spell cache of WeakAuras), Hydra Shot 3s and Double Ice Shot 10s after their damage (off by
+-- default).
 
 local mod, CL = BigWigs:NewBoss("Lady Vashj", 548, 1572)
 if not mod then return end
@@ -51,6 +54,8 @@ function mod:GetOptions()
 		{310659, "SAY"}, -- Static Charge (stage 2)
 		310635, -- Summon Elementals
 		310657, -- Summon Rays
+		{310632, "OFF"}, -- Hydra Shot (WA)
+		{310668, "OFF"}, -- Double Ice Shot (WA)
 		"proximity",
 	}
 end
@@ -64,6 +69,10 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_REMOVED", "StaticChargeRemoved", 310636, 310659)
 	self:Log("SPELL_SUMMON", "SummonElementals", 310635)
 	self:Log("SPELL_SUMMON", "SummonRays", 310657)
+	self:Log("SPELL_CAST_START", "ShockBlastStart", 310658) -- WA: heroic Shock Blast
+	self:Log("SPELL_DAMAGE", "HydraShot", 310632, 310633, 310634) -- WA
+	self:Log("SPELL_DAMAGE", "DoubleIceShot", 310668) -- WA: the spell id left in its trigger
+	self:Log("SPELL_AURA_APPLIED", "DoubleIceShot", 310668) -- WA: the Ice Arrow debuff of the same id
 	self:Death("TaintedElementalDeath", 36899) -- DBM: the Tainted Elemental id from its SWING_DAMAGE check
 	self:RegisterEvent("CHAT_MSG_MONSTER_YELL")
 	self:RegisterEvent("UNIT_HEALTH")
@@ -181,7 +190,35 @@ end
 
 function mod:ShockBlast(args)
 	self:TargetMessage(38509, "orange", args.destName)
-	self:Bar(38509, 10)
+	if not self:Heroic() then
+		self:Bar(38509, 10)
+	end -- WA: on heroic the 7s timer from the start of the cast
+end
+
+function mod:ShockBlastStart(args) -- WA: heroic, CLEU SPELL_CAST_START "Шоковый удар" of Lady Vashj, 7s
+	if self:Heroic() then
+		self:CDBar(38509, 7)
+	end
+end
+
+do
+	local prev = 0
+	function mod:HydraShot(args) -- WA: 3s after the damage
+		if args.time - prev > 1 then
+			prev = args.time
+			self:CDBar(310632, 3)
+		end
+	end
+end
+
+do
+	local prev = 0
+	function mod:DoubleIceShot(args) -- WA: 10s after the damage
+		if args.time - prev > 2 then
+			prev = args.time
+			self:CDBar(310668, 10)
+		end
+	end
 end
 
 function mod:Entangle()

@@ -3,6 +3,8 @@
 --
 -- 3.3.5: written for Sirus from DBM Sirus (DBM-Serpentshrine/Leotheras.lua, heroic mode with custom spells), draft by tools/dbm2bw
 -- Not ported: the Incinerate absorb and boss power frames, announcing the targets to the raid chat.
+-- Heroic cast bars not in DBM, from the players' WeakAuras (WA: "ЗСхм"): Fel Wave (310495) 3s, Seal (310487) 2s,
+-- the cast of Fel Brand 3s (WA by the name, here by the ids of the debuff).
 
 local mod, CL = BigWigs:NewBoss("Leotheras the Blind", 548, 1569)
 if not mod then return end
@@ -62,6 +64,7 @@ function mod:GetOptions()
 		310508, -- Annihilation
 		310503, -- soak
 		310487, -- Seal
+		310495, -- Fel Wave (WA)
 	}
 end
 
@@ -85,6 +88,8 @@ function mod:OnBossEnable()
 	self:Log("SPELL_CAST_START", "Run", 310510)
 	self:Log("SPELL_CAST_START", "Annihilation", 310508)
 	self:Log("SPELL_CAST_START", "Soak", 310503, 310487)
+	self:Log("SPELL_CAST_START", "FelWave", 310495) -- WA
+	self:Log("SPELL_CAST_START", "BrandCast", 310496, 310497) -- WA
 	self:RegisterEvent("CHAT_MSG_MONSTER_YELL")
 	self:RegisterEvent("UNIT_HEALTH")
 end
@@ -251,4 +256,16 @@ end
 function mod:Soak(args)
 	self:Message(args.spellId, "yellow")
 	self:PlaySound(args.spellId, "info")
+	if args.spellId == 310487 then
+		self:CastBar(310487, 2) -- WA: "Леотерас - печати", 2s
+	end
+end
+
+function mod:FelWave(args) -- WA: "Леотерас - волна скверны", 3s
+	self:Message(310495, "orange", CL.casting:format(args.spellName))
+	self:CastBar(310495, 3)
+end
+
+function mod:BrandCast(args) -- WA: "Леотерас - клеймо", the cast 3s
+	self:CastBar(310496, 3)
 end

@@ -25,6 +25,10 @@ function mod:OnBossEnable()
 	self:Death("Win", 17381)
 end
 
+function mod:OnEngage() -- 3.3.5: WA: "WA на ключи - автор Раэнис х3", the first Domination 15s after the pull yell
+	self:CDBar(30923, 15)
+end
+
 --------------------------------------------------------------------------------
 -- Event Handlers
 --
@@ -32,6 +36,7 @@ end
 function mod:Domination(args)
 	self:TargetMessage(args.spellId, "red", args.destName)
 	self:TargetBar(args.spellId, 10, args.destName)
+	self:CDBar(args.spellId, 30) -- 3.3.5: WA: "WA на ключи - автор Раэнис х3"
 end
 
 function mod:DominationRemoved(args)

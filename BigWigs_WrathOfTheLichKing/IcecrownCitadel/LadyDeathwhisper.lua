@@ -71,6 +71,7 @@ function mod:GetOptions()
 		{71204, "TANK_HEALER"}, -- Touch of Insignificance
 		72007, -- Frostbolt
 		72906, -- Frostbolt Volley
+		70768, -- 3.3.5: on you, not in DBM (WA: "T10 Pack", LDW - Shroud of the Occult)
 	}, {
 		["adds"] = CL.adds,
 		[71289] = CL.stage:format(1),
@@ -84,6 +85,7 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_APPLIED", "VampiricMight", 70674)
 	self:Log("SPELL_CAST_START", "DarkMartyrdom", 72499, 72500, 72497, 72496)
 	self:Log("SPELL_CAST_SUCCESS", "DominateMind", 71289)
+	self:Log("SPELL_AURA_APPLIED", "ShroudOnYou", 70768) -- 3.3.5: WA "T10 Pack"
 	self:Log("SPELL_AURA_APPLIED", "DeathAndDecay", 71001, 72108, 72109, 72110)
 	self:Log("SPELL_AURA_REMOVED", "ManaBarrierRemoved", 70842)
 	self:Log("SPELL_SUMMON", "SummonSpirit", 71426)
@@ -264,4 +266,11 @@ end
 
 function mod:FrostboltVolley()
 	self:CDBar(72906, 20)
+end
+
+function mod:ShroudOnYou(args) -- 3.3.5: WA "T10 Pack" (LDW - Shroud of the Occult on the player)
+	if self:Me(args.destGUID) then
+		self:PersonalMessage(70768)
+		self:PlaySound(70768, "alarm")
+	end
 end

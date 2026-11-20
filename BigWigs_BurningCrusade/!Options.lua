@@ -281,6 +281,7 @@ BigWigs:AddColors("Leotheras the Blind", {
 	[310478] = {"blue","orange"},
 	[310481] = {"blue","orange"},
 	[310484] = "cyan",
+	[310495] = "orange",
 	[310496] = {"blue","red"},
 	[310508] = "red",
 	[310510] = "red",

@@ -42,6 +42,7 @@ function mod:GetOptions()
 	return {
 		"teleport",
 		29213, -- Curse of the Plaguebringer
+		29214, -- Wrath of the Plaguebringer (WA)
 		29208, -- Blink
 		"adds",
 	}
@@ -50,6 +51,7 @@ end
 function mod:OnBossEnable()
 	self:Log("SPELL_CAST_SUCCESS", "CurseOfThePlaguebringer", 29213, 54835)
 	self:Log("SPELL_AURA_APPLIED", "Blink", 29208, 29209, 29210, 29211)
+	self:Log("SPELL_AURA_APPLIED", "PlaguebringerOnYou", 29213, 54835, 372056, 29214, 54836, 372057) -- WA: 372056/372057 heroic (the spell cache of WeakAuras)
 	self:RegisterEvent("CHAT_MSG_RAID_BOSS_EMOTE")
 	self:RegisterEvent("CHAT_MSG_MONSTER_YELL")
 	self:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", nil, "boss1")
@@ -182,5 +184,17 @@ function mod:CHAT_MSG_RAID_BOSS_EMOTE(_, msg)
 				self:Bar("adds", 30, CL.adds, 29212)
 			end
 		end
+	end
+end
+
+-- WA: "Naxx" (heroic), the curse and the wrath on you
+function mod:PlaguebringerOnYou(args)
+	if not self:Me(args.destGUID) then return end
+	if args.spellId == 29213 or args.spellId == 54835 or args.spellId == 372056 then
+		self:PersonalMessage(29213)
+		self:PlaySound(29213, "alarm")
+	else
+		self:PersonalMessage(29214)
+		self:PlaySound(29214, "warning")
 	end
 end

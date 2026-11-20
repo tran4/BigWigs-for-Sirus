@@ -34,6 +34,8 @@ end
 function mod:OnBossEnable()
 	self:Log("SPELL_AURA_APPLIED", "MutatingInjection", 28169)
 	self:Log("SPELL_AURA_REMOVED", "MutatingInjectionRemoved", 28169)
+	self:Log("SPELL_AURA_APPLIED", "MutatingInjection", 300638, 373326) -- WA: "Naxx" (heroic), ids of "Мутагенный укол" in the spell cache of WeakAuras
+	self:Log("SPELL_AURA_REMOVED", "MutatingInjectionRemoved", 300638, 373326)
 	self:Log("SPELL_CAST_SUCCESS", "PoisonCloud", 28240)
 	self:Log("SPELL_CAST_SUCCESS", "SlimeSpray", 28157, 54364)
 end
@@ -95,3 +97,4 @@ function mod:SlimeSpray(args)
 		self:Bar(54364, myRealm and 20 or 59)
 	end
 end
+

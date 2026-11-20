@@ -31,11 +31,20 @@ function mod:GetOptions()
 	return {
 		"teleport",
 		30122, -- Plague Cloud
+		373551, -- mark (WA, heroic)
 	}
 end
 
 function mod:OnBossEnable()
 	self:RegisterEvent("CHAT_MSG_MONSTER_YELL")
+	self:Log("SPELL_AURA_APPLIED", "HeroicMark", 373551) -- WA: "Naxx", group "Хейган"
+end
+
+function mod:HeroicMark(args) -- WA
+	self:TargetMessage(373551, "red", args.destName)
+	if self:Me(args.destGUID) then
+		self:PlaySound(373551, "warning")
+	end
 end
 
 function mod:OnEngage()

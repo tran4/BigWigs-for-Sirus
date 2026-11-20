@@ -18,6 +18,7 @@ function mod:GetOptions()
 		34970, -- Frenzy
 		31948, -- Ensnaring Moss
 		38801, -- Grievous Wound
+		35008, -- Water Spit (3.3.5: WA: "WA на ключи - автор Раэнис х3")
 	}
 end
 
@@ -26,6 +27,7 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_APPLIED", "EnsnaringMoss", 31948)
 	self:Log("SPELL_AURA_REMOVED", "EnsnaringMossRemoved", 31948)
 	self:Log("SPELL_AURA_APPLIED", "GrievousWound", 31956, 38801)
+	self:Log("SPELL_CAST_START", "WaterSpit", 35008, 40086) -- 3.3.5: WA: "WA на ключи - автор Раэнис х3", 15s
 
 	self:CheckForEngage()
 	self:Death("Win", 17991)
@@ -67,4 +69,9 @@ function mod:UNIT_HEALTH(event, unit)
 			self:MessageOld(34970, "green", nil, CL.soon:format(self:SpellName(34970)), false)
 		end
 	end
+end
+
+function mod:WaterSpit(args) -- 3.3.5: WA: "WA на ключи - автор Раэнис х3"
+	self:Message(35008, "orange", CL.casting:format(args.spellName))
+	self:CDBar(35008, 15)
 end

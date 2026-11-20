@@ -96,4 +96,7 @@ UtgardePinnacle\GortokPalehoof.lua
 UtgardePinnacle\Skadi.lua
 UtgardePinnacle\KingYmiron.lua
 UtgardePinnacle\Trash.lua
+
+MythicKeys\TrashTimers.lua
+
 !Options.lua

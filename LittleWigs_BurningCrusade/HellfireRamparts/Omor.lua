@@ -16,12 +16,14 @@ mod:SetEncounterID(1891) -- 3.3.5: encounter emulation, there is no ENCOUNTER_ST
 function mod:GetOptions()
 	return {
 		{30695, "SAY", "ICON"}, -- Treacherous Aura
+		31901, -- Demonic Shield (3.3.5: WA: "WA на ключи - автор Раэнис х3")
 	}
 end
 
 function mod:OnBossEnable()
 	self:Log("SPELL_AURA_APPLIED", "TreacherousAura", 30695, 37566) -- Treacherous Aura, Bane of Treachery (heroic version)
 	self:Log("SPELL_AURA_REMOVED", "TreacherousAuraRemoved", 30695, 37566)
+	self:Log("SPELL_AURA_APPLIED", "DemonicShield", 31901) -- 3.3.5: WA: "WA на ключи - автор Раэнис х3", 10s
 	self:Death("Win", 17308)
 end
 
@@ -41,4 +43,11 @@ end
 function mod:TreacherousAuraRemoved(args)
 	self:PrimaryIcon(30695)
 	self:StopBar(args.spellName, args.destName)
+end
+
+function mod:DemonicShield(args) -- 3.3.5: WA: "WA на ключи - автор Раэнис х3"
+	if self:MobId(args.destGUID) == 17308 then
+		self:Message(31901, "yellow", CL.onboss:format(args.spellName))
+		self:Bar(31901, 10, CL.other:format(args.spellName, CL.active))
+	end
 end
