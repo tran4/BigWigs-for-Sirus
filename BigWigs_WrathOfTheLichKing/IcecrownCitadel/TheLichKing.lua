@@ -22,6 +22,7 @@ local grabbed = {} -- [unit] = true
 local valkyrsToMark = {} -- [guid] = true, marking by target events
 local valkyrLowWarned = {} -- [guid] = true
 local spheres = {} -- [guid] = true
+local shriekers = {} -- 3.3.5: [guid] = true, the living Raging Spirits that used Soul Shriek (DBM: a bar per spirit)
 local prevWinter, prevDefileDamage, prevRestoreSoul = 0, 0, 0
 
 --------------------------------------------------------------------------------
@@ -111,6 +112,7 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_APPLIED", "RestoreSoulApplied", 73650)
 	self:Log("SPELL_CAST_START", "FuryOfFrostmourne", 72350)
 	self:Log("SPELL_CAST_START", "SoulShriek", 69242, 73800, 73801, 73802)
+	self:Death("RagingSpiritDeath", 36701) -- 3.3.5: DBM cancels the Soul Shriek timer on the spirit's death
 	self:Log("SPELL_CAST_SUCCESS", "NecroticPlague", 70337, 73912, 73913, 73914)
 	self:Log("SPELL_AURA_APPLIED", "NecroticPlagueJump", 70338, 73785, 73786, 73787)
 	self:Log("SPELL_DISPEL", "NecroticPlagueDispelled", 70337, 73912, 73913, 73914, 70338, 73785, 73786, 73787)
@@ -125,6 +127,7 @@ function mod:OnBossEnable()
 end
 
 function mod:OnEngage()
+	shriekers = {}
 	intermission = false
 	ragingSpiritCount = 0
 	stage2Warned, stage3Warned = false, false
@@ -235,7 +238,16 @@ function mod:RagingSpirit(args)
 end
 
 function mod:SoulShriek(args)
+	shriekers[args.sourceGUID] = true
 	self:CDBar(69242, 12)
+end
+
+function mod:RagingSpiritDeath(args)
+	-- 3.3.5: one bar for all spirits (DBM: a bar per spirit), it stayed at 0 after the last spirit died
+	shriekers[args.destGUID] = nil
+	if not next(shriekers) then
+		self:StopBar(69242)
+	end
 end
 
 function mod:UNIT_TARGET(_, unit)
