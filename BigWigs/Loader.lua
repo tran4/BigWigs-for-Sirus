@@ -2197,6 +2197,46 @@ SlashCmdList.BigWigs = function()
 	--end
 end
 
+-- 3.3.5: /bwdebug for testing the port in the game: prints what the loader sees for the zone and the target and
+-- toggles the debug messages of the boss modules (engage/win/wipe of the encounter emulation) in the chat
+SLASH_BigWigsDebug1 = "/bwdebug"
+SlashCmdList.BigWigsDebug = function(msg)
+	if msg == "off" then
+		public.debugChat = false
+		sysprint("debug: off")
+		return
+	end
+	public.debugChat = true
+	local p = function(...) sysprint("|cFFffff00debug|r " .. strjoin(" ", tostringall(...))) end
+	SetMapToCurrentZone()
+	local area = GetCurrentMapAreaID()
+	local name, iType, diffIndex, _, maxPlayers, dynDiff, isDynamic = GetInstanceInfo()
+	local _, _, difficultyID, _, _, _, _, instanceID = GetInstanceInfoModified()
+	p("zone:", GetRealZoneText(), "area:", area, "type:", iType, "diffIndex:", diffIndex, "max:", maxPlayers, "dyn:", dynDiff, isDynamic)
+	p("instance:", instanceID, "difficulty:", difficultyID, "enableZone:", enableZones[instanceID], "addons:", loadOnZone[instanceID] and #loadOnZone[instanceID] or 0)
+	for _, addon in next, {"BigWigs_Core", "BigWigs_Plugins", "LittleWigs_WrathOfTheLichKing", "LittleWigs_BurningCrusade", "BigWigs_WrathOfTheLichKing", "BigWigs_BurningCrusade", "BigWigs_Classic"} do
+		if IsAddOnLoaded(addon) then p("loaded:", addon) end
+	end
+	local core = BigWigs and BigWigs.IsEnabled and BigWigs:IsEnabled()
+	p("core enabled:", core and "yes" or "no")
+	local guid = UnitGUID("target")
+	if guid then
+		local mobId = Compat.GetCreatureID(guid)
+		p("target:", UnitName("target"), guid, "mobId:", mobId, "combat:", UnitAffectingCombat("target") and "yes" or "no")
+		if BigWigs and BigWigs.IterateBossModules and mobId then
+			local found
+			for moduleName, module in BigWigs:IterateBossModules() do
+				if module.enableMobs and module.enableMobs[mobId] then
+					found = true
+					p("module:", moduleName, "enabled:", module:IsEnabled() and "yes" or "no", "engaged:", module:IsEngaged() and "yes" or "no", "encounter:", tostring(module:GetEncounterID()))
+				end
+			end
+			if not found then p("no module has this mob") end
+		end
+	end
+	sysprint("debug: on, the engage/win/wipe messages of the modules are printed in the chat (/bwdebug off)")
+end
+
 SLASH_BigWigsVersion1 = "/bwv"
 local UnitInPartyIsAI = nil -- 3.3.5: no AI party members
 SlashCmdList.BigWigsVersion = function()

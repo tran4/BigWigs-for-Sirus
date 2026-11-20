@@ -638,6 +638,9 @@ function boss:Debug(...)
 	if Transcriptor then
 		Transcriptor:AddCustomEvent("BigWigs_Debug", "BigWigs", self.moduleName, ...)
 	end
+	if loader.debugChat then -- 3.3.5: /bwdebug prints the debug messages in the chat
+		print("|cFF33FF99BigWigs|r |cFFffff00debug|r", self.moduleName, ...)
+	end
 end
 
 --- Show an error after the encounter has ended
