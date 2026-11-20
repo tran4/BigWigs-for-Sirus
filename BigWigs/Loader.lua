@@ -2011,7 +2011,15 @@ do
 			else
 				bwFrame:UnregisterEvent("ZONE_CHANGED")
 				bwFrame:UnregisterEvent("ZONE_CHANGED_NEW_AREA")
-				UnregisterUnitTargetEvents()
+				-- 3.3.5: a Sirus world boss map can be instanced (A Waking Nightmare), keep the target check there
+				local mapId = GetBestMapForUnit("player")
+				if mapId and enableZones[-mapId] == "world" then
+					if not areEventsRegistered then
+						RegisterUnitTargetEvents()
+					end
+				else
+					UnregisterUnitTargetEvents()
+				end
 			end
 		end
 

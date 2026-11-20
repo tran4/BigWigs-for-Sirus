@@ -515,3 +515,14 @@ BigWigsAPI.SetBossModuleLocale("Archavon the Stone Watcher", {
 BigWigsAPI.SetBossModuleLocale("Emalon the Storm Watcher", {
 	overcharge_explosion = "Взрыв в результате перегрузки",
 })
+
+-- Sirus world bosses
+
+BigWigsAPI.SetBossModuleLocale("Norigorn", {
+	bossName = "Норигорн",
+})
+
+BigWigsAPI.SetBossModuleLocale("Zort", {
+	bossName = "Зорт",
+	cowardice_you = "Печать: Трусость - бей босса, держи радиус 6 метров!",
+})

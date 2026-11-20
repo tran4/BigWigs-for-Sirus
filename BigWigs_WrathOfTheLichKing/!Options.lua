@@ -1129,3 +1129,36 @@ BigWigs:AddSounds("Magic Eater", {
 	[317674] = "alarm",
 	[317685] = "alarm",
 })
+
+BigWigs:AddColors("Norigorn", {
+	[317274] = "yellow",
+	[317275] = "cyan",
+	[317624] = {"blue","orange"},
+})
+
+BigWigs:AddSounds("Norigorn", {
+	[317624] = "alarm",
+})
+
+BigWigs:AddColors("Zort", {
+	[307814] = "blue",
+	[307821] = "red",
+	[307829] = "orange",
+	[307833] = {"blue","purple"},
+	[307834] = "blue",
+	[307844] = "purple",
+	[307852] = "yellow",
+	[308512] = "orange",
+	[308620] = {"blue","orange"},
+	["stages"] = "cyan",
+})
+
+BigWigs:AddSounds("Zort", {
+	[307814] = "alarm",
+	[307821] = "alarm",
+	[307829] = "alert",
+	[307834] = "warning",
+	[308512] = "alert",
+	[308620] = "warning",
+	["stages"] = "long",
+})

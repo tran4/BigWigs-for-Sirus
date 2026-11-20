@@ -13,6 +13,7 @@
 
 ## X-Category: Raid
 ## X-BigWigs-LoadOn-InstanceId: 249, 616, 615, 724, 624, 533, 603, 649, 631, 10925, 10955
+## X-BigWigs-LoadOn-WorldBoss: -946, 70010, -914, 50702
 
 !Locales\ruRU.lua
 
@@ -93,5 +94,8 @@ BronzeSanctuary\Murozond.lua
 TolGarodPrison\Gogonash.lua
 TolGarodPrison\Ctrax.lua
 TolGarodPrison\MagicEater.lua
+
+WorldBosses\Norigorn.lua
+WorldBosses\Zort.lua
 
 !Options.lua

@@ -771,9 +771,21 @@ end
 function Compat.GetBestMapForUnit()
 	return Compat.GetCurrentAreaID()
 end
---- C_Map.GetMapInfo replacement, the 3.3.5 client can't look up map names by id
-function Compat.GetMapInfo()
-	return nil
+--- C_Map.GetMapInfo replacement, the 3.3.5 client can't look up map names by id:
+-- only the world maps of the world boss modules (zone names from the DBM Sirus .toc LoadZone) are known
+do
+	local isRussian = GetLocale() == "ruRU"
+	local mapNames = {
+		[914] = {"A Waking Nightmare", "Кошмар Наяву"}, -- Zort
+		[946] = {"Tol'Garod", "Тол'Гарод"}, -- Norigorn
+	}
+	Compat.mapNames = mapNames
+	function Compat.GetMapInfo(mapID)
+		local entry = mapID and mapNames[mapID]
+		if entry then
+			return {mapID = mapID, name = isRussian and entry[2] or entry[1]}
+		end
+	end
 end
 
 do
