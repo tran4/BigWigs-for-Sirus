@@ -2219,6 +2219,14 @@ SlashCmdList.BigWigsDebug = function(msg)
 	end
 	local core = BigWigs and BigWigs.IsEnabled and BigWigs:IsEnabled()
 	p("core enabled:", core and "yes" or "no")
+	if Compat.GetPlayerRole then -- 3.3.5: the role the boss modules use (TANK/HEALER/DAMAGER), set by BigWigs_Core
+		local form
+		for i = 1, GetNumShapeshiftForms() or 0 do
+			local _, name, isActive = GetShapeshiftFormInfo(i)
+			if isActive then form = name end
+		end
+		p("role:", Compat.GetPlayerRole(), "form:", form or "none")
+	end
 	local guid = UnitGUID("target")
 	if guid then
 		local mobId = Compat.GetCreatureID(guid)

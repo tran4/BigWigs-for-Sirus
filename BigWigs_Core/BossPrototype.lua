@@ -101,6 +101,103 @@ local talentRoles = {
 	WARLOCK = { "DAMAGER", "DAMAGER", "DAMAGER" },
 	WARRIOR = { "DAMAGER", "DAMAGER", "TANK" },
 }
+-- 3.3.5: on Sirus a death knight tanks in any tree (Frost and Unholy tanks too) and a feral druid tanks or deals damage
+-- with the same tree, so the role of the player comes first from the presence, form, stance or aura the player is in
+-- (DBM Sirus names "Власть льда" and "Облик лютого медведя" as the tank ones, DBM-ZulAman localization), then from the
+-- talents like LibGroupTalents in DBM Sirus. Updated on enable, on engage and on every form change.
+local tankForms = { -- class = { tank forms }, { damage forms }
+	DEATHKNIGHT = { { 48263 }, { 48266, 48265 } }, -- Frost Presence; Blood, Unholy Presence
+	DRUID = { { 5487, 9634 }, { 768 } }, -- Bear Form, Dire Bear Form; Cat Form
+	WARRIOR = { { 71 }, {} }, -- Defensive Stance (a Protection warrior charges in Battle Stance, keep the talents then)
+}
+local function GetFormRole(class)
+	if class == "PALADIN" then
+		local righteousFury = GetSpellName(25780)
+		if righteousFury and UnitBuff("player", righteousFury) then return "TANK" end
+		return
+	end
+	local forms = tankForms[class]
+	if not forms then return end
+	local active
+	for i = 1, GetNumShapeshiftForms() or 0 do
+		local _, name, isActive = GetShapeshiftFormInfo(i)
+		if isActive then active = name break end
+	end
+	if not active then return end
+	for role = 1, 2 do
+		for _, spellId in next, forms[role] do
+			if GetSpellName(spellId) == active then
+				return role == 1 and "TANK" or "DAMAGER"
+			end
+		end
+	end
+end
+local function HasTalent(tree, spellId) -- 3.3.5: by the name, the talent order of the client is not the one of Wrath Classic
+	local name = GetSpellName(spellId)
+	for i = 1, GetNumTalents(tree) or 0 do
+		local talentName, _, _, _, rank = GetTalentInfo(tree, i)
+		if talentName == name then return rank and rank > 0 end
+	end
+	return false
+end
+local function UpdateRole()
+	if isCata then
+		local _, role, position = LibSpec.MySpecialization()
+		myRole, myRolePosition = role, position
+		return
+	end
+	local _, class = UnitClass("player")
+	if not class or not talentRoles[class] then return end
+	local spent = 0
+	local talentTree = 0
+	for tree = 1, 3 do
+		local _, _, pointsSpent = GetTalentTabInfo(tree) -- 3.3.5: name, icon, pointsSpent, background
+		if pointsSpent and pointsSpent > spent then
+			spent = pointsSpent
+			talentTree = tree
+			myRole = talentRoles[class][tree]
+		end
+	end
+
+	local formRole = GetFormRole(class)
+	if formRole then
+		myRole = formRole
+	elseif class == "DEATHKNIGHT" or (class == "DRUID" and talentTree == 2) then
+		local role = UnitGroupRolesAssigned("player") -- Using the LFG tool?
+		if role == "TANK" or role == "DAMAGER" then
+			myRole = role
+		elseif class == "DEATHKNIGHT" then
+			-- LibGroupTalents (DBM Sirus): 2 of the 3 tank talents Blade Barrier, Toughness, Anticipation
+			local score = (HasTalent(1, 49182) and 1 or 0) + (HasTalent(2, 49042) and 1 or 0) + (HasTalent(3, 55129) and 1 or 0)
+			myRole = score >= 2 and "TANK" or "DAMAGER"
+		else
+			-- DBM Sirus: a feral druid with Natural Reaction is a tank
+			myRole = HasTalent(2, 57881) and "TANK" or "DAMAGER"
+		end
+	end
+
+	if myRole == "DAMAGER" then
+		myRolePosition = "MELEE"
+		if
+			class == "MAGE" or class == "HUNTER" or class == "PRIEST" or class == "WARLOCK" or
+			(class == "DRUID" and talentTree == 1) or (class == "SHAMAN" and talentTree == 1)
+		then
+			myRolePosition = "RANGED"
+		end
+	elseif myRole == "TANK" then
+		myRolePosition = "MELEE"
+	end
+end
+do
+	local frame = CreateFrame("Frame")
+	frame:RegisterEvent("UPDATE_SHAPESHIFT_FORM")
+	frame:RegisterEvent("UNIT_AURA")
+	frame:SetScript("OnEvent", function(_, event, unit)
+		if event == "UNIT_AURA" and (unit ~= "player" or select(2, UnitClass("player")) ~= "PALADIN") then return end
+		UpdateRole()
+	end)
+end
+Compat.GetPlayerRole = function() return myRole, myRolePosition end -- 3.3.5: for /bwdebug (BigWigsLoader is read only)
 local updateData = function(module)
 	myGUID = UnitGUID("player")
 	hasVoice = BigWigsAPI:HasVoicePack()
@@ -118,67 +215,7 @@ local updateData = function(module)
 		englishSayMessages = false
 	end
 
-	if isCata then
-		local _, role, position = LibSpec.MySpecialization()
-		myRole, myRolePosition = role, position
-	else
-		local _, class = UnitClass("player")
-		local spent = 0
-		local talentTree = 0
-		for tree = 1, 3 do
-			local _, _, pointsSpent = GetTalentTabInfo(tree) -- 3.3.5: name, icon, pointsSpent, background
-			if pointsSpent and pointsSpent > spent then
-				spent = pointsSpent
-				talentTree = tree
-				myRole = talentRoles[class][tree]
-			end
-		end
-
-		if class == "DEATHKNIGHT" and talentTree == 1 then -- defaults to TANK
-			-- Using the LFG tool?
-			local role = UnitGroupRolesAssigned("player")
-			if role == "TANK" or role == "DAMAGER" then
-				myRole = role
-			elseif spent == 51 then
-				-- Meta tank spec was 43/27/1 with Blood DPS pretty much dead at this point in Wrath
-				myRole = "DAMAGER"
-			end
-		elseif class == "DRUID" and talentTree == 2 then -- defaults to DAMAGER
-			if isVanilla then
-				-- Check for bear talents
-				local feralInstinct = select(5, GetTalentInfo(2, 3))
-				local thickHide = select(5, GetTalentInfo(2, 5))
-				local primalFury = select(5, GetTalentInfo(2, 12))
-				if feralInstinct == 5 and thickHide >= 2 and primalFury == 2 then
-					myRole = "TANK"
-				end
-			else
-				-- Using the LFG tool?
-				local role = UnitGroupRolesAssigned("player")
-				if role == "TANK" or role == "DAMAGER" then
-					myRole = role
-				else
-					-- Check for bear talents
-					local thickHide = select(5, GetTalentInfo(2, 1))
-					local survivalInstincts = select(5, GetTalentInfo(2, 15))
-					local naturalReaction = select(5, GetTalentInfo(2, 29))
-					if thickHide == 5 and survivalInstincts == 1 and naturalReaction == 5 then
-						myRole = "TANK"
-					end
-				end
-			end
-		end
-
-		if myRole == "DAMAGER" then
-			myRolePosition = "MELEE"
-			if
-				class == "MAGE" or class == "HUNTER" or class == "PRIEST" or class == "WARLOCK" or
-				(class == "DRUID" and talentTree == 1) or (class == "SHAMAN" and talentTree == 1)
-			then
-				myRolePosition = "RANGED"
-			end
-		end
-	end
+	UpdateRole() -- 3.3.5: see UpdateRole
 
 	local _, _, diff, _, currentMaxPlayers = GetInstanceInfo()
 	difficulty, maxPlayers = diff, currentMaxPlayers
