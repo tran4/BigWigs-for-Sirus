@@ -1,0 +1,97 @@
+## Interface: 30300
+
+## Title: BigWigs [|cffeda55fWrath of the Lich King|r]
+## Title-ruRU: BigWigs [|cffeda55fWrath of the Lich King|r]
+## Notes: Boss warnings for Wrath of the Lich King raids (Sirus 3.3.5 port, modules from DBM Sirus).
+## Notes-ruRU: Предупреждения о боссах рейдов Wrath of the Lich King (порт для Sirus 3.3.5, модули по DBM Sirus).
+## Author: Funkeh, Delk (3.3.5 port for Sirus)
+## Version: v12.1.0-sirus1
+## IconTexture: Interface\AddOns\BigWigs\Media\Icons\minimap_raid
+
+## LoadOnDemand: 1
+## Dependencies: BigWigs
+
+## X-Category: Raid
+## X-BigWigs-LoadOn-InstanceId: 249, 616, 615, 724, 624, 533, 603, 649, 631, 10925, 10955
+
+!Locales\ruRU.lua
+
+OnyxiasLair\Onyxia.lua
+
+EyeOfEternity\Malygos.lua
+
+ObsidianSanctum\Drakes.lua
+ObsidianSanctum\Sartharion.lua
+
+RubySanctum\Baltharus.lua
+RubySanctum\Saviana.lua
+RubySanctum\Zarithrian.lua
+RubySanctum\Halion.lua
+
+VaultOfArchavon\Archavon.lua
+VaultOfArchavon\Emalon.lua
+VaultOfArchavon\Koralon.lua
+VaultOfArchavon\Toravon.lua
+
+Naxxramas\AnubRekhan.lua
+Naxxramas\Faerlina.lua
+Naxxramas\Maexxna.lua
+Naxxramas\Noth.lua
+Naxxramas\Heigan.lua
+Naxxramas\Loatheb.lua
+Naxxramas\Razuvious.lua
+Naxxramas\Gothik.lua
+Naxxramas\FourHorsemen.lua
+Naxxramas\Patchwerk.lua
+Naxxramas\Grobbulus.lua
+Naxxramas\Gluth.lua
+Naxxramas\Thaddius.lua
+Naxxramas\Sapphiron.lua
+Naxxramas\KelThuzad.lua
+
+Ulduar\Trash.lua
+Ulduar\FlameLeviathan.lua
+Ulduar\Ignis.lua
+Ulduar\Razorscale.lua
+Ulduar\XT002.lua
+Ulduar\AssemblyOfIron.lua
+Ulduar\Kologarn.lua
+Ulduar\Auriaya.lua
+Ulduar\Hodir.lua
+Ulduar\Thorim.lua
+Ulduar\Freya.lua
+Ulduar\Mimiron.lua
+Ulduar\GeneralVezax.lua
+Ulduar\YoggSaron.lua
+Ulduar\Algalon.lua
+
+TrialOfTheCrusader\NorthrendBeasts.lua
+TrialOfTheCrusader\LordJaraxxus.lua
+TrialOfTheCrusader\FactionChampions.lua
+TrialOfTheCrusader\TwinValkyr.lua
+TrialOfTheCrusader\Anubarak.lua
+
+IcecrownCitadel\Trash.lua
+IcecrownCitadel\LordMarrowgar.lua
+IcecrownCitadel\LadyDeathwhisper.lua
+IcecrownCitadel\GunshipBattle.lua
+IcecrownCitadel\DeathbringerSaurfang.lua
+IcecrownCitadel\Festergut.lua
+IcecrownCitadel\Rotface.lua
+IcecrownCitadel\ProfessorPutricide.lua
+IcecrownCitadel\BloodPrinceCouncil.lua
+IcecrownCitadel\BloodQueenLanathel.lua
+IcecrownCitadel\ValithriaDreamwalker.lua
+IcecrownCitadel\Sindragosa.lua
+IcecrownCitadel\TheLichKing.lua
+IcecrownCitadel\Jaina.lua
+
+BronzeSanctuary\Imporus.lua
+BronzeSanctuary\Elonus.lua
+BronzeSanctuary\Murozond.lua
+
+TolGarodPrison\Gogonash.lua
+TolGarodPrison\Ctrax.lua
+TolGarodPrison\MagicEater.lua
+
+!Options.lua

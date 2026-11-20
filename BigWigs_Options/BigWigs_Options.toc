@@ -1,0 +1,24 @@
+## Interface: 30300
+
+## Title: BigWigs [|cffeda55fOptions|r]
+## Title-ruRU: BigWigs [|cffeda55fНастройки|r]
+## Notes: BigWigs Configuration Options
+## Notes-ruRU: Модуль настроек BigWigs
+## Version: v427.9-sirus1
+
+## LoadOnDemand: 1
+## Dependencies: BigWigs, BigWigs_Core, BigWigs_Plugins
+
+Libs\AceGUI-3.0\AceGUI-3.0.xml
+Libs\AceGUIWidget-BigWigsSharedDropdown.lua
+Libs\AceConfigRegistry-3.0\AceConfigRegistry-3.0.xml
+Libs\AceConfigDialog-3.0\AceConfigDialog-3.0.xml
+Libs\AceDBOptions-3.0\AceDBOptions-3.0.lua
+Libs\LibDDI-1.0\lib.lua
+Libs\LibSerialize\LibSerialize.lua
+Libs\LibDeflate\LibDeflate.lua
+
+EncodingUtil.lua
+Sharing.lua
+InstanceSharing.lua
+Options.lua

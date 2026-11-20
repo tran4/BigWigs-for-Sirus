@@ -1,0 +1,15 @@
+## Interface: 30300
+
+## Title: BigWigs [|cffeda55fCore|r]
+## Title-ruRU: BigWigs [|cffeda55fЯдро|r]
+## Notes: BigWigs Core
+## Notes-ruRU: Ядро BigWigs
+## Version: v427.9-sirus1
+
+## LoadOnDemand: 1
+## Dependencies: BigWigs
+
+Constants.lua
+BossPrototype.lua
+PluginPrototype.lua
+Core.lua

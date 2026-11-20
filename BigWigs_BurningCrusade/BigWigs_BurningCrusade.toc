@@ -1,0 +1,85 @@
+## Interface: 30300
+
+## Title: BigWigs [|cffeda55fThe Burning Crusade|r]
+## Title-ruRU: BigWigs [|cffeda55fThe Burning Crusade|r]
+## Notes: Boss warnings for The Burning Crusade raids (Sirus 3.3.5 port, modules from DBM Sirus).
+## Notes-ruRU: Предупреждения о боссах рейдов The Burning Crusade (порт для Sirus 3.3.5, модули по DBM Sirus).
+## Author: Funkeh, Delk (3.3.5 port for Sirus)
+## Version: v12.1.11-sirus1
+## IconTexture: Interface\AddOns\BigWigs\Media\Icons\minimap_raid
+
+## LoadOnDemand: 1
+## Dependencies: BigWigs
+
+## X-Category: Raid
+## X-BigWigs-LoadOn-InstanceId: 532, 565, 544, 548, 550, 534, 564, 568, 580
+
+!Locales\ruRU.lua
+
+Karazhan\Attumen.lua
+Karazhan\BigBadWolf.lua
+Karazhan\Chess.lua
+Karazhan\Curator.lua
+Karazhan\MaidenOfVirtue.lua
+Karazhan\Moroes.lua
+Karazhan\Netherspite.lua
+Karazhan\Nightbane.lua
+Karazhan\PrinceMalchezaar.lua
+Karazhan\RomuloAndJulianne.lua
+Karazhan\ShadeOfAran.lua
+Karazhan\TerestianIllhoof.lua
+Karazhan\WizardOfOz.lua
+Karazhan\Zluker.lua
+
+GruulsLair\Gruul.lua
+GruulsLair\Maulgar.lua
+
+MagtheridonsLair\Magtheridon.lua
+
+SerpentshrineCavern\Trash.lua
+SerpentshrineCavern\Fathomlord.lua
+SerpentshrineCavern\Gorelac.lua
+SerpentshrineCavern\Hydross.lua
+SerpentshrineCavern\Leotheras.lua
+SerpentshrineCavern\TheLurkerBelow.lua
+SerpentshrineCavern\Tidewalker.lua
+SerpentshrineCavern\Vashj.lua
+
+TempestKeep\Trash.lua
+TempestKeep\Alar.lua
+TempestKeep\KaelThas.lua
+TempestKeep\Solarian.lua
+TempestKeep\VoidReaver.lua
+
+HyjalSummit\Trash.lua
+HyjalSummit\Anetheron.lua
+HyjalSummit\Archimonde.lua
+HyjalSummit\Azgalor.lua
+HyjalSummit\Kazrogal.lua
+HyjalSummit\RageWinterchill.lua
+
+BlackTemple\Bloodboil.lua
+BlackTemple\Illidan.lua
+BlackTemple\IllidariCouncil.lua
+BlackTemple\Najentus.lua
+BlackTemple\ReliquaryOfSouls.lua
+BlackTemple\ShadeOfAkama.lua
+BlackTemple\Shahraz.lua
+BlackTemple\Supremus.lua
+BlackTemple\TeronGorefiend.lua
+
+ZulAman\Akilzon.lua
+ZulAman\Halazzi.lua
+ZulAman\Janalai.lua
+ZulAman\Malacrass.lua
+ZulAman\Nalorakk.lua
+ZulAman\ZulJin.lua
+
+SunwellPlateau\Brutallus.lua
+SunwellPlateau\EredarTwins.lua
+SunwellPlateau\Felmyst.lua
+SunwellPlateau\Kalecgos.lua
+SunwellPlateau\KilJaeden.lua
+SunwellPlateau\Muru.lua
+
+!Options.lua

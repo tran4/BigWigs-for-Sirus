@@ -1,0 +1,69 @@
+## Interface: 30300
+
+## Title: BigWigs [|cffeda55fClassic|r]
+## Title-ruRU: BigWigs [|cffeda55fClassic|r]
+## Notes: Boss warnings for Classic raids (Sirus 3.3.5 port, modules from DBM Sirus).
+## Notes-ruRU: Предупреждения о боссах рейдов Classic (порт для Sirus 3.3.5, модули по DBM Sirus).
+## Author: Funkeh, Delk (3.3.5 port for Sirus)
+## Version: v12.1.2-sirus1
+## IconTexture: Interface\AddOns\BigWigs\Media\Icons\minimap_raid
+
+## LoadOnDemand: 1
+## Dependencies: BigWigs
+
+## X-Category: Raid
+## X-BigWigs-LoadOn-InstanceId: 409, 469, 509, 531, 309
+
+!Locales\ruRU.lua
+
+MoltenCore\BaronGeddon.lua
+MoltenCore\Garr.lua
+MoltenCore\Gehennas.lua
+MoltenCore\Golemagg.lua
+MoltenCore\Lucifron.lua
+MoltenCore\Magmadar.lua
+MoltenCore\Majordomo.lua
+MoltenCore\Ragnaros.lua
+MoltenCore\Shazzrah.lua
+MoltenCore\Sulfuron.lua
+
+BlackwingLair\Broodlord.lua
+BlackwingLair\Chromaggus.lua
+BlackwingLair\Ebonroc.lua
+BlackwingLair\Firemaw.lua
+BlackwingLair\Flamegor.lua
+BlackwingLair\Nefarian.lua
+BlackwingLair\Razorgore.lua
+BlackwingLair\Vaelastrasz.lua
+
+RuinsOfAhnQiraj\Trash.lua
+RuinsOfAhnQiraj\Ayamiss.lua
+RuinsOfAhnQiraj\Buru.lua
+RuinsOfAhnQiraj\Kurinnaxx.lua
+RuinsOfAhnQiraj\Moam.lua
+RuinsOfAhnQiraj\Ossirian.lua
+RuinsOfAhnQiraj\Rajaxx.lua
+
+TempleOfAhnQiraj\Trash.lua
+TempleOfAhnQiraj\CThun.lua
+TempleOfAhnQiraj\Fankriss.lua
+TempleOfAhnQiraj\Huhuran.lua
+TempleOfAhnQiraj\Ouro.lua
+TempleOfAhnQiraj\Sartura.lua
+TempleOfAhnQiraj\SilithidRoyalty.lua
+TempleOfAhnQiraj\Skeram.lua
+TempleOfAhnQiraj\TwinEmperors.lua
+TempleOfAhnQiraj\Viscidus.lua
+
+ZulGurub\Arlokk.lua
+ZulGurub\EdgeOfMadness.lua
+ZulGurub\Gahzranka.lua
+ZulGurub\Hakkar.lua
+ZulGurub\Jeklik.lua
+ZulGurub\Jindo.lua
+ZulGurub\Mandokir.lua
+ZulGurub\Marli.lua
+ZulGurub\Thekal.lua
+ZulGurub\Venoxis.lua
+
+!Options.lua
