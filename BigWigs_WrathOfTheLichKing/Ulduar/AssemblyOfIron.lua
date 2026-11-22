@@ -16,6 +16,7 @@ mod:SetWinMobs(32857, 32867, 32927) -- 3.3.5: DBM kills when all of them died
 local disruptionList = {}
 local disruptionIcon = 7
 local prevDisruption = 0
+local brundirDead, molgeimDead = false, false
 
 --------------------------------------------------------------------------------
 -- Localization
@@ -46,7 +47,7 @@ function mod:GetOptions()
 		{312769, "TANK_HEALER"}, -- Fusion Punch
 		312772, -- Overwhelming Power
 		overwhelmingMarker,
-		312770, -- Static Disruption
+		{312770, "PROXIMITY"}, -- Static Disruption (3.3.5: proximity when Steelbreaker is alone, user's request)
 		disruptionMarker,
 		-- Runemaster Molgeim
 		{312774, "DISPEL"}, -- Shield of Runes
@@ -79,11 +80,13 @@ function mod:OnBossEnable()
 	self:Log("SPELL_CAST_SUCCESS", "RuneOfDeath", 312777, 312424, 63490, 62269)
 	self:Log("SPELL_AURA_APPLIED", "RuneOfDeathApplied", 312424, 312777, 62269, 63490)
 	self:Death("BrundirDeath", 32857)
+	self:Death("MolgeimDeath", 32927) -- 3.3.5: stop his bars (Rune of Power stayed on the screen)
 end
 
 function mod:OnEngage()
 	disruptionList = {}
 	disruptionIcon = 7
+	brundirDead, molgeimDead = false, false
 	self:Berserk(900)
 	self:CDBar(61973, 21)
 end
@@ -129,10 +132,29 @@ function mod:LightningTendrils(args)
 	self:CastBar(312786, 27)
 end
 
+local function steelbreakerAlone(self)
+	-- 3.3.5: only Steelbreaker left, spread out for Static Disruption (user's request; 10 yards, no range in DBM Sirus)
+	if brundirDead and molgeimDead then
+		self:OpenProximity(312770, 10)
+	end
+end
+
 function mod:BrundirDeath()
-	self:CDBar(61973, 25)
-	self:Bar(312777, 25)
-	self:CastBar(312774, 27)
+	brundirDead = true
+	if not molgeimDead then -- 3.3.5: Molgeim's bars only while he lives
+		self:CDBar(61973, 25)
+		self:Bar(312777, 25)
+		self:CastBar(312774, 27)
+	end
+	steelbreakerAlone(self)
+end
+
+function mod:MolgeimDeath()
+	molgeimDead = true
+	self:StopBar(61973) -- Rune of Power
+	self:StopBar(312777) -- Rune of Death
+	self:StopCastBar(312774) -- Shield of Runes
+	steelbreakerAlone(self)
 end
 
 -- Steelbreaker

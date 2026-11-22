@@ -4200,7 +4200,12 @@ end
 -- @param[opt] icon the message icon as a texture name (string) or as a spell ID to fetch its texture (number) or use false (bool) to disable the icon
 -- @bool[opt] disableEmphasize if true then this message can never emphasize regardless of user settings
 -- @number[opt] customDisplayTime overwrite the user display time (the time the message stays on screen) with a defined one
+-- 3.3.5: no "Casting X" messages on any boss (user's request): the start of a cast is a cast bar or nothing, the
+-- message only repeated it in the middle of the screen. Matched by the localized CL.casting prefix ("Чтение ").
+local castingPrefix = CL.casting:match("^(.-)%%s")
+if castingPrefix == "" then castingPrefix = nil end
 function boss:Message(key, color, text, icon, disableEmphasize, customDisplayTime)
+	if castingPrefix and type(text) == "string" and text:sub(1, #castingPrefix) == castingPrefix then return end
 	if self:CanPassRoleRestrictions(key) then
 		local isEmphasized = not disableEmphasize and self:CheckFlag(key, C.EMPHASIZE)
 		if self:CheckFlag(key, C.MESSAGE) or isEmphasized then

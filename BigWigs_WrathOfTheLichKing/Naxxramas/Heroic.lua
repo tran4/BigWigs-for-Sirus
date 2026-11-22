@@ -92,7 +92,7 @@ do
 		local key = args.spellId == 372090 and 372089 or args.spellId
 		if args.time - (prev[key] or 0) > 1 then
 			prev[key] = args.time
-			self:Message(key, "yellow", CL.casting:format(args.spellName))
+			self:Message(key, "yellow", args.spellName) -- 3.3.5: no "Casting" prefix (user), the name only
 		end
 	end
 end

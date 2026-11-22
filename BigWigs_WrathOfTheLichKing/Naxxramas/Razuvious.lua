@@ -120,7 +120,7 @@ end
 local heroicKey = {[372074] = 372069, [372075] = 372070, [372076] = 372071, [372077] = 372072} -- the second ids of the WA spells
 function mod:HeroicCast(args)
 	local key = heroicKey[args.spellId] or args.spellId
-	self:Message(key, "orange", CL.casting:format(args.spellName))
+	self:Message(key, "orange", args.spellName) -- 3.3.5: no "Casting" prefix (user), the name only
 end
 
 function mod:DarkDebuff(args)

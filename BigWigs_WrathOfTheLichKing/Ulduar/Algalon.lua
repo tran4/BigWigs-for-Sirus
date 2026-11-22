@@ -46,7 +46,7 @@ function mod:GetOptions()
 		"warmup",
 		"stages",
 		"berserk",
-		{313034, "TANK"}, -- Big Bang
+		313034, -- Big Bang (3.3.5: for everyone, hide in a black hole; DBM Sirus: announce and cast timer for all)
 		313036, -- Cosmic Smash
 		{313033, "TANK"}, -- Phase Punch
 		"collapsing_star",
@@ -108,9 +108,7 @@ end
 
 function mod:BigBang(args)
 	self:Message(313034, "red")
-	if self:Tank() then
-		self:PlaySound(313034, "alarm") -- defensive
-	end
+	self:PlaySound(313034, "alarm") -- 3.3.5: everyone runs into a black hole (it was tank only)
 	self:CastBar(313034, 8)
 	self:Bar(313034, 90.5)
 	self:DelayedMessage(313034, 80, "orange", CL.soon:format(args.spellName))

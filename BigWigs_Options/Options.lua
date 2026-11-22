@@ -250,6 +250,30 @@ do
 						order = 54,
 						width = 1.32,
 					},
+					-- 3.3.5: the Sirus port, its GitHub and the guild Discord of the porter
+					sirusPortDesc = {
+						type = "description",
+						name = "\n" .. (GetLocale() == "ruRU" and "Портировано на Sirus (WoW 3.3.5a): |cFFFFD100Аморик-x1|r" or "Ported to Sirus (WoW 3.3.5a) by |cFFFFD100Аморик-x1|r") .. "\n",
+						fontSize = "medium",
+						order = 55,
+						width = "full",
+					},
+					sirusGitHub = {
+						type = "input",
+						get = function() return "github.com/tran4/BigWigs-for-Sirus" end,
+						set = function() end,
+						name = "GitHub (Sirus)",
+						order = 56,
+						width = 1.5,
+					},
+					sirusDiscord = {
+						type = "input",
+						get = function() return "discord.gg/XxCHFkZm7u" end,
+						set = function() end,
+						name = "Discord",
+						order = 57,
+						width = 1.0,
+					},
 					profileOptions = {
 						type = "group",
 						childGroups = "tab",
