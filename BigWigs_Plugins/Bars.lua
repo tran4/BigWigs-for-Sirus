@@ -391,12 +391,33 @@ end
 
 local inConfigureMode = false
 do
-	local testCount = 0
-	local testIcons = {
-		"Interface\\AddOns\\BigWigs\\Media\\Icons\\minimap_legacy.tga",
-		"Interface\\AddOns\\BigWigs\\Media\\Icons\\minimap_raid.tga",
-		"Interface\\AddOns\\BigWigs\\Media\\Icons\\minimap_party.tga",
+	-- 3.3.5: the test button makes 8 bars with different names, times and colors (user's request), some under 10 seconds
+	-- to show the emphasized bars too
+	local testBars = GetLocale() == "ruRU" and {
+		{"Огненный шар", 28, {0.9, 0.3, 0.1}}, {"Ледяная стрела", 24, {0.3, 0.6, 1}}, {"Призыв помощников", 20, {0.6, 0.4, 0.9}},
+		{"Землетрясение", 16, {0.7, 0.55, 0.3}}, {"Чумной удар", 13, {0.3, 0.8, 0.3}}, {"Теневой залп", 9, {0.5, 0.2, 0.7}},
+		{"Вихрь", 6, {0.9, 0.85, 0.2}}, {"Берсерк", 4, {0.85, 0.1, 0.1}},
+	} or {
+		{"Fireball", 28, {0.9, 0.3, 0.1}}, {"Frostbolt", 24, {0.3, 0.6, 1}}, {"Summon Adds", 20, {0.6, 0.4, 0.9}},
+		{"Earthquake", 16, {0.7, 0.55, 0.3}}, {"Plague Strike", 13, {0.3, 0.8, 0.3}}, {"Shadow Volley", 9, {0.5, 0.2, 0.7}},
+		{"Whirlwind", 6, {0.9, 0.85, 0.2}}, {"Berserk", 4, {0.85, 0.1, 0.1}},
 	}
+	local testBarIcons = {
+		"Interface\\Icons\\Spell_Fire_FlameBolt", "Interface\\Icons\\Spell_Frost_FrostBolt02", "Interface\\Icons\\Spell_Shadow_RaiseDead",
+		"Interface\\Icons\\Spell_Nature_Earthquake", "Interface\\Icons\\Spell_DeathKnight_EmpowerRuneBlade", "Interface\\Icons\\Spell_Shadow_ShadowBolt",
+		"Interface\\Icons\\Ability_Whirlwind", "Interface\\Icons\\Spell_Shadow_UnholyFrenzy",
+	}
+	local function StartTestBars()
+		for i = 1, #testBars do
+			local t = testBars[i]
+			plugin:SendMessage("BigWigs_StartBar", plugin, nil, t[1], t[2], testBarIcons[i])
+			local bar = getBar(normalAnchor, plugin, t[1]) or getBar(emphasizeAnchor, plugin, t[1])
+			if bar and not bar:Get("bigwigs:emphasized") then
+				bar:SetColor(t[3][1], t[3][2], t[3][3], 1)
+			end
+			plugin:SendMessage("BigWigs_Timer", plugin, nil, t[2], t[2], t[1], 0, testBarIcons[i], false, true)
+		end
+	end
 	local function HiddenOnRetail() return not BigWigsLoader.isRetail end
 	local function IsNormalAnchorPointDefault() return db.normalPosition[5] == plugin.defaultDB.normalPosition[5] end
 	local function IsExpAnchorPointDefault() return db.expPosition[5] == plugin.defaultDB.expPosition[5] end
@@ -486,12 +507,7 @@ do
 				type = "execute",
 				name = L.testBarsBtn,
 				desc = L.testBarsBtn_desc,
-				func = function()
-					testCount = testCount + 1
-					local time = math.random(11, 30)
-					plugin:SendMessage("BigWigs_StartBar", plugin, nil, BigWigsAPI:GetLocale("BigWigs: Common").count:format(L.test, testCount), time, testIcons[(testCount%3)+1])
-					plugin:SendMessage("BigWigs_Timer", plugin, nil, time, time, BigWigsAPI:GetLocale("BigWigs: Common").count:format(L.test, testCount), 0, testIcons[(testCount%3)+1], false, true)
-				end,
+				func = StartTestBars, -- 3.3.5: 8 bars, see StartTestBars
 				width = 1.5,
 				order = 0.4,
 			},
