@@ -186,6 +186,8 @@ local function UpdateRole()
 		end
 	elseif myRole == "TANK" then
 		myRolePosition = "MELEE"
+	elseif myRole == "HEALER" then
+		myRolePosition = "RANGED" -- 3.3.5: else the position of the previous role stays (a healer was "MELEE" after a tank spec)
 	end
 end
 do

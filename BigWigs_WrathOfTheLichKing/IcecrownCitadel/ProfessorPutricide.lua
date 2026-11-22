@@ -50,7 +50,7 @@ function mod:GetOptions()
 		71255, -- Choking Gas Bomb
 		72295, -- Malleable Goo
 		-- Stage Three
-		{72451, "TANK_HEALER"}, -- Mutated Plague
+		72451, -- Mutated Plague (3.3.5: tanks and the classes with a taunt, see MutatedPlague)
 		-- Intermission
 		71617, -- Tear Gas
 		72843, -- Volatile Experiment
@@ -169,14 +169,18 @@ function mod:CreateConcoction() -- change to stage 2
 		self:ScheduleTimer("StageChange", 35) -- the target is set 5 seconds after
 		self:Bar("stages", 35, CL.stage:format(2), "achievement_bg_returnxflags_def_wsg")
 		self:CDBar(72295, 45.5)
-		self:Bar(71255, 57)
-		self:DelayedMessage(71255, 52, "orange", CL.soon:format(self:SpellName(71255)))
+		if self:Melee() then -- 3.3.5: the gas bombs only for melee and tanks (DBM Sirus: the warnings are "Melee"), user's request
+			self:Bar(71255, 57)
+			self:DelayedMessage(71255, 52, "orange", CL.soon:format(self:SpellName(71255)))
+		end
 		self:SafeBar("Bar", 70911, 120 - since(unboundTime))
 	else
 		self:Bar("stages", 9.5, CL.stage:format(2), "achievement_bg_returnxflags_def_wsg")
 		self:CDBar(72295, 19)
-		self:Bar(71255, 30.5)
-		self:DelayedMessage(71255, 25.5, "orange", CL.soon:format(self:SpellName(71255)))
+		if self:Melee() then -- 3.3.5: melee and tanks only
+			self:Bar(71255, 30.5)
+			self:DelayedMessage(71255, 25.5, "orange", CL.soon:format(self:SpellName(71255)))
+		end
 	end
 end
 
@@ -184,8 +188,10 @@ function mod:GuzzlePotions() -- change to stage 3
 	self:StopStageBars()
 	self:SafeBar("CDBar", 70341, 65 - since(puddleTime))
 	self:SafeBar("CDBar", 72295, 50 - since(gooTime))
-	self:SafeBar("Bar", 71255, 66 - since(chokingTime))
-	if 61 - since(chokingTime) > 0 then
+	if self:Melee() then -- 3.3.5: melee and tanks only
+		self:SafeBar("Bar", 71255, 66 - since(chokingTime))
+	end
+	if self:Melee() and 61 - since(chokingTime) > 0 then
 		self:DelayedMessage(71255, 61 - since(chokingTime), "orange", CL.soon:format(self:SpellName(71255)))
 	end
 	local diff = self:Difficulty()
@@ -225,13 +231,12 @@ function mod:SlimePuddle(args)
 end
 
 function mod:ChokingGasBomb(args)
+	chokingTime = GetTime()
+	if not self:Melee() then return end -- 3.3.5: melee and tanks only (DBM Sirus warns "Melee"), user's request
 	self:Message(71255, "orange")
-	if self:Melee() then
-		self:PlaySound(71255, "alarm")
-	end
+	self:PlaySound(71255, "alarm")
 	self:Bar(71255, 35.5)
 	self:DelayedMessage(71255, 30.5, "orange", CL.soon:format(args.spellName))
-	chokingTime = GetTime()
 end
 
 function mod:UnboundPlagueCast()
@@ -308,9 +313,15 @@ function mod:UnboundPlagueRemoved(args)
 	self:CustomIcon(unboundPlagueMarker, args.destName)
 end
 
-function mod:MutatedPlague(args)
-	self:StackMessage(72451, "purple", args.destName, args.amount or 1, 99)
-	self:CDBar(72451, 10)
+do
+	-- 3.3.5: for the tanks and the classes that can taunt off the stacks, not for the healers (user's request)
+	local taunt = {WARRIOR = true, PALADIN = true, DRUID = true, DEATHKNIGHT = true, HUNTER = true}
+	function mod:MutatedPlague(args)
+		local _, class = UnitClass("player")
+		if not self:Tank() and not taunt[class] then return end
+		self:StackMessage(72451, "purple", args.destName, args.amount or 1, 99)
+		self:CDBar(72451, 10)
+	end
 end
 
 function mod:OozeVariable(args)
