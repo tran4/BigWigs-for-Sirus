@@ -5,7 +5,7 @@
 ## Notes: Boss warnings for Classic raids (Sirus 3.3.5 port, modules from DBM Sirus).
 ## Notes-ruRU: Предупреждения о боссах рейдов Classic (порт для Sirus 3.3.5, модули по DBM Sirus).
 ## Author: Funkeh, Delk (3.3.5 port for Sirus)
-## Version: v12.1.2-sirus1
+## Version: v12.1.2-sirus2
 ## IconTexture: Interface\AddOns\BigWigs\Media\Icons\minimap_raid
 
 ## LoadOnDemand: 1

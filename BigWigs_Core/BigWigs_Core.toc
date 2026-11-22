@@ -4,7 +4,7 @@
 ## Title-ruRU: BigWigs [|cffeda55fЯдро|r]
 ## Notes: BigWigs Core
 ## Notes-ruRU: Ядро BigWigs
-## Version: v427.9-sirus1
+## Version: v427.9-sirus2
 
 ## LoadOnDemand: 1
 ## Dependencies: BigWigs
