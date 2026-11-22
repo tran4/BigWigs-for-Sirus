@@ -54,6 +54,7 @@
 | `/pull 10` | Отсчёт пулла на 10 секунд (виден и игрокам с DBM) |
 | `/break 5` | Перерыв на 5 минут |
 | `/bwdebug` | Диагностика: зона, сложность, загруженные модули, состояние боя по текущей цели (`/bwdebug off` — выключить) |
+| `/bwlog on` | Включить журнал боёв (см. ниже). `/bwlog` — сколько боёв записано, `/bwlog off` — выключить, `/bwlog clear` — стереть записи |
 
 Модули загружаются сами при входе в подземелье или рейд. Модули мировых боссов загружаются, когда босс у вас в цели.
 
@@ -69,6 +70,25 @@
 2. `/bw` → «Тест»: проверьте, что полосы вообще появляются.
 3. Возьмите босса в цель и наберите `/bwdebug`. Повторите после начала боя.
 4. Создайте [Issue](../../issues): напишите босса, сложность, текст ошибки и вывод `/bwdebug`.
+
+### Журнал боёв: помогите добавить недостающее
+
+Если босс или моб делает что-то важное, а BigWigs об этом молчит, запишите бой — по журналу это можно добавить в аддон.
+
+1. Наберите `/bwlog on` (один раз, настройка запоминается).
+2. Пройдите подземелье, ключ или рейд как обычно. Каждый бой записывается отдельно, в подземельях и рейдах.
+3. Выйдите из игры или наберите `/reload` — только тогда игра сохраняет запись на диск.
+4. Возьмите файл `<папка игры>\WTF\Account\<ВАШ_АККАУНТ>\SavedVariables\BigWigs.lua`, запакуйте его в `.zip`
+   (GitHub не принимает файлы `.lua`) и прикрепите к новому [Issue](../../issues).
+5. В Issue напишите: подземелье или рейд, сложность, какой босс или моб и что именно не показывалось
+   (например: «Крепость Утгард, ключ, третий босс — каст „…“ без предупреждения»).
+
+Что попадает в журнал: только действия мобов и боссов — касты с номерами заклинаний и временем, ауры от мобов, призывы,
+смерти, крики и эмоции, сбитые игроками касты мобов, а также что в этот момент показал BigWigs. Действия игроков, удары
+оружием, исцеления и каждый тик урона не пишутся. Хранятся последние 40 боёв.
+
+В журнале есть имена игроков вашей группы (цели заклинаний мобов), а в файле — настройки BigWigs и имена ваших
+персонажей. Если не хотите ими делиться, сотрите записи перед походом (`/bwlog clear`) и присылайте только нужный бой.
 
 ### Благодарности
 
@@ -131,6 +151,7 @@ Your settings are stored in the `WTF` folder and are kept.
 | `/pull 10` | 10-second pull countdown (also shown to DBM users) |
 | `/break 5` | 5-minute break |
 | `/bwdebug` | Diagnostics: zone, difficulty, loaded modules, fight state for your current target (`/bwdebug off` to disable) |
+| `/bwlog on` | Turn on the fight log (see below). `/bwlog` — how many fights are saved, `/bwlog off` — turn off, `/bwlog clear` — delete them |
 
 Modules load by themselves when you enter a dungeon or raid. World boss modules load when you target the boss.
 
@@ -145,6 +166,24 @@ of those auras work. "DBM Timer / Announce" triggers will not work without DBM.
 2. `/bw` → "Test": check that bars show up at all.
 3. Target the boss and type `/bwdebug`. Repeat after the pull.
 4. Open an [Issue](../../issues) with the boss, the difficulty, the error text and the `/bwdebug` output.
+
+### Fight log: help add what's missing
+
+If a boss or a mob does something important and BigWigs stays silent, record the fight — the log is enough to add it.
+
+1. Type `/bwlog on` (once, the setting is remembered).
+2. Run the dungeon, key or raid as usual. Every fight is saved separately, in dungeons and raids.
+3. Log out or type `/reload` — only then the game writes the log to the disk.
+4. Take `<game folder>\WTF\Account\<YOUR_ACCOUNT>\SavedVariables\BigWigs.lua`, put it in a `.zip`
+   (GitHub doesn't accept `.lua` files) and attach it to a new [Issue](../../issues).
+5. In the Issue write the dungeon or raid, the difficulty, the boss or mob and what wasn't shown.
+
+What goes into the log: only the actions of mobs and bosses — casts with spell ids and times, auras from mobs, summons,
+deaths, yells and emotes, mob casts interrupted by players, and what BigWigs showed at that moment. Player actions, melee,
+heals and every damage tick are left out. The last 40 fights are kept.
+
+The log has the names of your group members (the targets of mob spells), and the file has your BigWigs settings and your
+character names. If you don't want to share them, clear the log before the run (`/bwlog clear`).
 
 ### Credits
 
