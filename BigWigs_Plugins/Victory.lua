@@ -18,6 +18,7 @@ local SOUND = LibSharedMedia.MediaType and LibSharedMedia.MediaType.SOUND or "so
 
 plugin.defaultDB = {
 	soundName = "BigWigs: Victory",
+	playSound = true, -- 3.3.5: an on/off switch, the "None" sound is missing in the dropdown in the game (user's report)
 	blizzVictory = false,
 	bigwigsVictory = true,
 }
@@ -40,10 +41,17 @@ plugin.pluginOptions = {
 			width = "full",
 			fontSize = "medium",
 		},
+		playSound = { -- 3.3.5: see defaultDB
+			type = "toggle",
+			name = L.victoryPlaySound,
+			order = 2,
+			width = "full",
+		},
 		soundName = {
 			type = "select",
 			name = L.victorySound,
-			order = 2,
+			order = 2.5,
+			disabled = function() return not plugin.db.profile.playSound end,
 			get = function(info)
 				for i, v in next, LibSharedMedia:List(SOUND) do
 					if v == plugin.db.profile[info[#info]] then
@@ -135,7 +143,7 @@ do
 		if t-prev > 5 then -- Dastardly Duos sanity preservation
 			prev = t
 			local soundName = self.db.profile.soundName
-			if soundName ~= "None" then
+			if self.db.profile.playSound and soundName ~= "None" then -- 3.3.5: playSound, see defaultDB
 				local sound = LibSharedMedia:Fetch(SOUND, soundName, true)
 				if sound then
 					self:PlaySoundFile(sound)

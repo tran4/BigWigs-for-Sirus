@@ -1322,6 +1322,7 @@ L.blizzTimelineEnhancedWarning = "WARNING!\n\nThe Blizzard timeline doesn't supp
 L.Victory = "Victory"
 L.victoryHeader = "Configure the actions that should be taken after you defeat a boss encounter."
 L.victorySound = "Play a victory sound"
+L.victoryPlaySound = "Play the victory sound" -- 3.3.5: the on/off switch of the victory sound
 L.victoryMessages = "Show boss defeat messages"
 L.victoryMessageBigWigs = "Show the BigWigs message"
 L.victoryMessageBigWigsDesc = "The BigWigs message is a simple \"boss has been defeated\" message."

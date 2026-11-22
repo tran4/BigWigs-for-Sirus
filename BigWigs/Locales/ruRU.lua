@@ -1323,6 +1323,7 @@ L.blizzTimelineEnhancedWarning = "|cffff4411ВНИМАНИЕ!|r\n\nВремен�
 L.Victory = "Победа"
 L.victoryHeader = "Настройки действий, которые должны быть выполнены после победы над боссом."
 L.victorySound = "Проигрывать звук победы над боссом"
+L.victoryPlaySound = "Включить звук победы"
 L.victoryMessages = "Показывать сообщения о победе над боссом"
 L.victoryMessageBigWigs = "Показывать сообщение BigWigs"
 L.victoryMessageBigWigsDesc = "Сообщение BigWigs - это простая надпись \"босс был побежден\"."
