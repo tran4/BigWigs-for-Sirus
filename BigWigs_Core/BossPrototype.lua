@@ -4875,7 +4875,10 @@ do
 		end
 		local isBarEnabled = checkFlag(self, key, C.BAR)
 		if checkFlag(self, key, C.BAR) then
-			self:SendMessage("BigWigs_StartBar", self, key, msg, time, icons[icon or textType == "number" and text or key], true, maxTime, nil, eventId)
+			-- 3.3.5: the modules for Sirus come from DBM, whose cooldown timers vanish at 0; a cooldown bar waiting at 0 forever
+			-- stayed on the screen when the ability doesn't come any more (Ward of Life after Freya's tower, Valithria's
+			-- portals). It waits 5 seconds at 0 and goes away (retail: waits until stopped).
+			self:SendMessage("BigWigs_StartBar", self, key, msg, time, icons[icon or textType == "number" and text or key], 5, maxTime, nil, eventId)
 		end
 		if checkFlag(self, key, C.COUNTDOWN) then
 			self:SendMessage("BigWigs_StartCountdown", self, key, msg, time)
