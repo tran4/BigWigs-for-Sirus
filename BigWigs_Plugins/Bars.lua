@@ -1444,7 +1444,7 @@ function getBar(anchor, module, text, eventId)
 			if bar:Get("bigwigs:eventId") == eventId then
 				return bar
 			end
-		elseif text and bar:Get("bigwigs:module") == module and bar:GetLabel() == text then
+		elseif text and bar:Get("bigwigs:module") == module and (bar:Get("bigwigs:text") or bar:GetLabel()) == text then -- 3.3.5: the full text, the label has no cast count
 			return bar
 		end
 	end
@@ -1824,7 +1824,10 @@ do
 		bar:SetLabelVisibility(db.text)
 		bar:SetIconPosition(db.iconPosition)
 		bar:SetFill(db.fill)
-		bar:SetLabel(text)
+		-- 3.3.5: no cast counter on the bars ("Cosmic Smash (12)" -> "Cosmic Smash", user's request). The full text is kept
+		-- for finding the bar (StopBar, PauseBar) and is still sent to WeakAuras with the count, like DBM.
+		bar:Set("bigwigs:text", text)
+		bar:SetLabel(type(text) == "string" and text:gsub(" %(%d+%)$", "") or text)
 		local indicators = nil -- XXX Spell indicators come from C_EncounterTimeline (retail only), not available on 3.3.5
 		if indicators then
 			local indicatorFrame = GetBarIndicatorFrame()
@@ -1841,9 +1844,10 @@ do
 			-- Workaround for wow custom font loading issues
 			self:SimpleTimer(function()
 				initial = false
-				if (not self:IsSecret(text) and not self:IsSecret(bar:GetLabel()) and bar:GetLabel() == text) or (eventId and bar:Get("bigwigs:eventId") == eventId) then
+				if bar.data and (bar:Get("bigwigs:text") == text or (eventId and bar:Get("bigwigs:eventId") == eventId)) then -- 3.3.5: see the cast counter above; stopped bars have no data
+					local label = bar:GetLabel()
 					bar:SetLabel("-1")
-					bar:SetLabel(text)
+					bar:SetLabel(label)
 				end
 			end, 0.3)
 		end

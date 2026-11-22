@@ -45,7 +45,7 @@ function mod:GetOptions()
 		{64003, "TANK"}, -- Overhead Smash
 		312752, -- Shockwave
 		{63346, "SAY"}, -- Focused Eyebeam
-		312757, -- Stone Grip
+		{312757, "OFF"}, -- Stone Grip (3.3.5: who was gripped, off by default on request)
 		gripMarker,
 		{312748, "TANK"}, -- Crunch Armor
 		"left_arm",
@@ -91,6 +91,7 @@ function mod:ShockwaveDamage(args)
 end
 
 function mod:EyebeamDamage(args)
+	self:StopBar(63346) -- 3.3.5: only the first eyebeam has a bar (DBM), it stayed at 0 until the end of the fight
 	if self:Me(args.destGUID) and args.time - prevEyebeamDamage > 2 then
 		prevEyebeamDamage = args.time
 		self:PersonalMessage(63346, "underyou")
@@ -100,6 +101,7 @@ end
 
 function mod:CHAT_MSG_RAID_BOSS_WHISPER(_, msg)
 	if msg:find(L.eyebeam_whisper) then -- DBM: a pattern ("%s" in the Russian text)
+		self:StopBar(63346) -- 3.3.5: see EyebeamDamage
 		self:PersonalMessage(63346)
 		self:PlaySound(63346, "alarm") -- run, keep moving
 		self:Say(63346)
