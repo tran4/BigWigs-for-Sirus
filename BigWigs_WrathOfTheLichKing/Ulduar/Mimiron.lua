@@ -29,6 +29,7 @@ local spinUpTime = 0
 local L = mod:SetDefaultLocale({
 	engage_trigger = "We haven't much time, friends! You're going to help me test out my latest and greatest creation. Now, before you change your minds, remember that you kind of owe it to me after the mess you made with the XT-002.",
 	hardmode_trigger = "Self-destruct sequence initiated.",
+	hardmode_trigger2 = "Self-destruct sequence initiated.", -- WA: "Ульда" (Flames Timer Mimiron), the first flames 4s after it
 	stage2_trigger = "WONDERFUL! Positively marvelous results! Hull integrity at 98.9 percent! Barely a dent! Moving right along.",
 	stage3_trigger = "Thank you, friends! Your efforts have yielded some fantastic data! Now, where did I put-- oh, there it is!",
 	stage4_trigger = "Preliminary testing phase complete. Now comes the true test!",
@@ -47,6 +48,7 @@ local L = mod:SetDefaultLocale({
 	magnetic_core_icon = 64444,
 	bomb_bot = "Bomb Bot spawned",
 })
+mod:SetChatEnableTriggers(L.engage_trigger, L.hardmode_trigger, L.hardmode_trigger2) -- 3.3.5: enable on these yells (no target yet)
 
 --------------------------------------------------------------------------------
 -- Initialization
@@ -87,6 +89,7 @@ function mod:GetOptions()
 end
 
 function mod:OnBossEnable()
+	hardmode = false -- 3.3.5: reset on the wipe too (the module reboots), see the hard mode yells
 	self:Log("SPELL_CAST_START", "ShockBlast", 63631, 312439, 312792)
 	self:Log("SPELL_CAST_START", "PlasmaBlast", 64529, 62997, 312437, 312790)
 	self:Log("SPELL_AURA_APPLIED", "PlasmaBlastApplied", 64529, 62997, 312437, 312790)
@@ -132,6 +135,7 @@ function mod:Mines() -- every 38 seconds in stage 1 and 4
 end
 
 function mod:Flames() -- hard mode
+	self.flamesStarted = true -- 3.3.5: the first flames came, the second hard mode yell doesn't move them any more
 	self:Bar(312803, 28)
 	self:DelayedMessage(312803, 18, "yellow", CL.soon:format(self:SpellName(312803)))
 	self.flamesTimer = self:ScheduleTimer("Flames", 28)
@@ -194,13 +198,25 @@ end
 function mod:CHAT_MSG_MONSTER_YELL(_, msg)
 	if msg:find(L.engage_trigger, nil, true) then
 		self:Engage()
-	elseif msg:find(L.hardmode_trigger, nil, true) then
+	elseif msg:find(L.hardmode_trigger, nil, true) or msg:find(L.hardmode_trigger2, nil, true) then
+		-- DBM: the first flames 1.5s after its yell; WA "Ульда": 4s after "Отсчет времени до самоуничтожения начат." (Russian
+		-- DBM has another, long yell; in the game only the WA countdown showed, user's report)
+		local flamesIn = msg:find(L.hardmode_trigger, nil, true) and 1.5 or 4
+		if hardmode then -- the second of the two yells: only the time to the first flames
+			if not self.flamesStarted then
+				self:CancelTimer(self.flamesTimer)
+				self:Bar(312803, flamesIn)
+				self.flamesTimer = self:ScheduleTimer("Flames", flamesIn)
+			end
+			return
+		end
 		self:Engage()
 		hardmode = true
+		self.flamesStarted = nil
 		self:StopBerserk(self:SpellName(26662))
 		self:Bar("hardmode", 610, L.hardmode, L.hardmode_icon)
-		self:Bar(312803, 1.5)
-		self.flamesTimer = self:ScheduleTimer("Flames", 1.5)
+		self:Bar(312803, flamesIn)
+		self.flamesTimer = self:ScheduleTimer("Flames", flamesIn)
 		self:CDBar(312790, 28)
 		self:Bar(312793, 69)
 		self:Bar(312789, 21)
