@@ -5,7 +5,7 @@
 ## Notes: Boss warnings for Wrath of the Lich King raids (Sirus 3.3.5 port, modules from DBM Sirus).
 ## Notes-ruRU: Предупреждения о боссах рейдов Wrath of the Lich King (порт для Sirus 3.3.5, модули по DBM Sirus).
 ## Author: Funkeh, Delk (3.3.5 port for Sirus)
-## Version: v12.1.0-sirus2
+## Version: v12.1.0-sirus3
 ## IconTexture: Interface\AddOns\BigWigs\Media\Icons\minimap_raid
 
 ## LoadOnDemand: 1

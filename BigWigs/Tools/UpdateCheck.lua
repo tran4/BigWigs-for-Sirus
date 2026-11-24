@@ -6,7 +6,7 @@
 -- PORT_VERSION goes up by one with every release pushed to GitHub (also "-sirusN" in the .toc versions).
 --
 
-local PORT_VERSION = 2
+local PORT_VERSION = 3
 local PREFIX = "BWSirus"
 local URL = "github.com/tran4/BigWigs-for-Sirus"
 

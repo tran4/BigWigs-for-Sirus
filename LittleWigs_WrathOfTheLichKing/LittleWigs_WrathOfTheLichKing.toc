@@ -5,7 +5,7 @@
 ## Notes: Boss warnings for Wrath of the Lich King 5-man dungeons (Sirus 3.3.5 port).
 ## Notes-ruRU: Предупреждения о боссах подземелий Wrath of the Lich King на 5 игроков (порт для Sirus 3.3.5).
 ## Author: Funkeh, Delk (3.3.5 port for Sirus)
-## Version: v12.1.23-sirus2
+## Version: v12.1.23-sirus3
 ## IconTexture: Interface\AddOns\BigWigs\Media\Icons\minimap_party
 
 ## LoadOnDemand: 1

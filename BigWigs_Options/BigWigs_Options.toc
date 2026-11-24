@@ -4,7 +4,7 @@
 ## Title-ruRU: BigWigs [|cffeda55fНастройки|r]
 ## Notes: BigWigs Configuration Options
 ## Notes-ruRU: Модуль настроек BigWigs
-## Version: v427.9-sirus2
+## Version: v427.9-sirus3
 
 ## LoadOnDemand: 1
 ## Dependencies: BigWigs, BigWigs_Core, BigWigs_Plugins

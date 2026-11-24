@@ -38,7 +38,7 @@ function mod:OnBossEnable()
 	self:Log("SPELL_AURA_REMOVED", "ElectricalStormRemoved", 43648)
 	self:Log("SPELL_AURA_APPLIED", "StaticDisruption", 44008)
 	self:Log("SPELL_CAST_SUCCESS", "GustOfWind", 43621)
-	self:Log("SPELL_CAST_SUCCESS", "StaticDisruptionSuccess", 44008)
+	self:Log("SPELL_CAST_START", "StaticDisruptionStart", 43622) -- 3.3.5: no SPELL_CAST_SUCCESS of 44008 on Sirus (fight log)
 	self:RegisterEvent("CHAT_MSG_MONSTER_YELL")
 end
 
@@ -66,6 +66,10 @@ function mod:ElectricalStorm(args)
 	self:CastBar(43648, 8)
 	self:DelayedMessage(43648, 50, "yellow", CL.soon:format(args.spellName))
 	self:CDBar(43648, 60)
+	-- 3.3.5 (experimental): no Static Disruption during the storm (8s) and ~5s after it (fight log: 13s after the storm started)
+	if self:BarTimeLeft(44008) < 13 then
+		self:CDBar(44008, 13)
+	end
 	self:CloseProximity("proximity")
 	self:ScheduleTimer("OpenProximity", 10, "proximity", 12)
 	self:CustomIcon(stormMarker, args.destName, 1)
@@ -76,7 +80,7 @@ end
 
 function mod:ElectricalStormRemoved(args)
 	self:CustomIcon(stormMarker, args.destName)
-	self:CDBar(43622, 11)
+	-- 3.3.5: no 11s bar after the storm (DBM), the Static Disruption bar is moved when the storm starts
 end
 
 function mod:StaticDisruption(args)
@@ -90,6 +94,6 @@ function mod:GustOfWind(args)
 	self:TargetMessage(43621, "orange", args.destName)
 end
 
-function mod:StaticDisruptionSuccess()
+function mod:StaticDisruptionStart() -- 3.3.5: every 15s from the cast start (fight log)
 	self:CDBar(44008, 15)
 end

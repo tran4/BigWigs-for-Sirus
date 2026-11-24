@@ -4,7 +4,7 @@
 ## Title-ruRU: BigWigs [|cffeda55fПлагины|r]
 ## Notes: BigWigs Core Plugins
 ## Notes-ruRU: Модуль BigWigs Плагины
-## Version: v427.9-sirus2
+## Version: v427.9-sirus3
 
 ## LoadOnDemand: 1
 ## Dependencies: BigWigs, BigWigs_Core

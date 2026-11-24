@@ -48,6 +48,8 @@ function mod:OnEngage()
 	self:Bar("bombs", 40, L.bombs, L.bombs_icon)
 	self:CDBar(43140, 12)
 	self:Berserk(360)
+	-- 3.3.5 (experimental): the fight log of the user (Sirus 10 normal): Flame Breath every 10.5s, no breath during the Fire Bombs
+	-- (the next one 11.6-15.7s after the bombs yell), the bombs every 32-40s (DBM: breath 12s, bombs 50s)
 end
 
 --------------------------------------------------------------------------------
@@ -60,7 +62,10 @@ function mod:CHAT_MSG_MONSTER_YELL(_, msg)
 	elseif msg == L.bombs_trigger then
 		self:Message("bombs", "red", L.bombs, L.bombs_icon)
 		self:Bar("bombs", 11, CL.explosion, 66313)
-		self:Bar("bombs", 50, L.bombs, L.bombs_icon)
+		self:CDBar("bombs", 32, L.bombs, L.bombs_icon) -- 3.3.5: 32-40s in the log (DBM 50)
+		if self:BarTimeLeft(43140) < 11.6 then -- 3.3.5: no breath during the bombs (log)
+			self:CDBar(43140, 11.6)
+		end
 	elseif msg == L.hatchers_trigger then
 		self:Message("hatchers", "cyan", L.hatchers, L.hatchers_icon)
 		self:Bar("hatchers", 145, L.hatchers, L.hatchers_icon)
@@ -68,5 +73,5 @@ function mod:CHAT_MSG_MONSTER_YELL(_, msg)
 end
 
 function mod:FlameBreath()
-	self:CDBar(43140, 12)
+	self:CDBar(43140, 10.5) -- 3.3.5: 10.5s between breaths in the log (DBM 12)
 end

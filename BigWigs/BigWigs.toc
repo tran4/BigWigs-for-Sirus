@@ -5,7 +5,7 @@
 ## Notes-ruRU: Простой и удобный помощник в битвах с боссами.
 ## IconTexture: Interface\AddOns\BigWigs\Media\Icons\minimap_raid
 ## Author: Funkeh, Nebula, Justwait, Delk (3.3.5a/Sirus port)
-## Version: v427.9-sirus2
+## Version: v427.9-sirus3
 
 ## X-Credits: Ammo, Caleb, Elvador, Vhaarr
 ## X-Category: Raid
